@@ -1,0 +1,537 @@
+{
+  "routes": [
+    {
+      "id": "13C",
+      "name": "13C Route",
+      "from": "Tintay Jeepney Terminal",
+      "to": "Colonnade Supermarket",
+      "landmarks": [
+        "Hotel",
+        "Mall / Grocery",
+        "Road",
+        "School",
+        "Terminal",
+        "USC Campus"
+      ],
+      "directional": false,
+      "waypoints": [
+        {
+          "name": "Tintay Jeepney Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Cebu Mary Immaculate College",
+          "type": "School"
+        },
+        {
+          "name": "Talamban Elementary School",
+          "type": "School"
+        },
+        {
+          "name": "Gaisano Grand Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Aicila Suites Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "University of San Carlos",
+          "campus": "Talamban",
+          "type": "USC Campus"
+        },
+        {
+          "name": "Banilad Town Center",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Gaisano Country Mall",
+          "type": "Mall / Grocery",
+          "terminal": true
+        },
+        {
+          "name": "University of Cebu Banilad Campus",
+          "type": "School"
+        },
+        {
+          "name": "Paradise Village Road",
+          "type": "Road"
+        },
+        {
+          "name": "Samantabhadra Institute",
+          "type": "School"
+        },
+        {
+          "name": "Waterfront Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "P. Cabantan"
+  
+        },
+        {
+          "name": "PAG-IBIG",
+          "type": "Government Office"
+        },
+        {
+          "name": "Standard Charter Bank"
+        },
+        {
+          "name": "Insular Life Cebu Business Center ",
+          "type": "Mall / Grocery"
+        },
+
+
+        {
+          "name": "Ayala Center Cebu",
+          "type": "Mall / Grocery",
+          "terminal": true
+        },
+        {
+          "name": "Hotel Elizabeth Cebu",
+          "type": "Hotel"
+        },
+        {
+          "name": "Asilo De La Milagrosa"
+        },
+        {
+          "name": "Colegio De La Immaculada Concepcion",
+          "type":"School"
+        },
+
+        {
+          "name": "University of San Carlos",
+          "campus": "Main",
+          "type": "USC Campus"
+        },
+        {
+          "name": "Gen Echavez Street",
+          "type": "Road"
+        },
+        {
+          "name": "Sikatuna Street",
+          "type": "Road"
+        },
+      
+        {
+          "name": "Colon Obelisk",
+          "type": "Terminal",
+          "terminal": true
+        },
+        {
+          "name": "University of Visayas",
+          "type": "School"
+        },
+        {
+          "name": "Gaisano Main",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Colonnade Supermarket",
+          "type": "Mall / Grocery"
+        }
+      ]
+    },
+    {
+      "id": "13H",
+      "name": "13H Route",
+      "from": "Pit-os",
+      "to": "Colon Obelisk",
+      "landmarks": [
+        "Hotel",
+        "Mall / Grocery",
+        "Road",
+        "School",
+        "Terminal",
+        "USC Campus"
+      ],
+      "directional": false,
+      "waypoints": [
+  {
+    "name": "Pitos",
+    "type": "Terminal"
+  },
+  {
+    "name": "Bacayan",
+    "type": "Landmark"
+  },
+  {
+    "name": "Smeag",
+    "type": "School"
+  },
+  {
+    "name": "Sparta",
+    "type": "Landmark"
+  },
+  {
+    "name": "Pelish",
+    "type": "Landmark"
+  },
+  {
+    "name": "English School",
+    "type": "School"
+  },
+  {
+    "name": "Gaisano Grand Mall",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Aicila Suites Hotel",
+    "type": "Hotel"
+  },
+  {
+    "name": "University of San Carlos",
+    "campus": "Talamban",
+    "type": "USC Campus"
+  },
+  {
+    "name": "Cebu Home and Builders Center",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Cebu Home and Builders Center",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Oftana Suites",
+    "type": "Hotel"
+  },
+  {
+    "name": "Allure Hotel and Suites",
+    "type": "Hotel"
+  },
+  {
+    "name": "Benedicto College",
+    "type": "School"
+  },
+  {
+    "name": "The Orchard Cebu Hotel and Suites",
+    "type": "Hotel"
+  },
+  {
+    "name": "J Centre Mall",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Mandaue City",
+    "type": "City"
+  },
+  {
+    "name": "Andy Hotel",
+    "type": "Hotel"
+  },
+  {
+    "name": "A. Del Rosario Street",
+    "type": "Road"
+  },
+  {
+    "name": "Mandaue Public Market",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Colonnade Supermarket",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Mandaue City Sports and Cultural Complex",
+    "type": "Landmark"
+  },
+  {
+    "name": "Bureau of Internal Revenue",
+    "type": "Government Office"
+  },
+  {
+    "name": "New Mandaue Public Market",
+    "type": "Mall / Grocery"
+  }
+]
+
+    },
+    {
+      "id": "13B",
+      "name": "13B Route",
+      "from": "Tintay Jeepney Terminal",
+      "to": "Colon Obelisk",
+      "landmarks": [
+        "Business Hub",
+        "Mall / Grocery",
+        "Residential Area",
+        "School",
+        "Terminal",
+        "USC Campus"
+      ],
+      "directional": false,
+      "waypoints": [
+  {
+    "name": "Tintay Jeepney Terminal",
+    "type": "Terminal"
+  },
+  {
+    "name": "Cebu Mary Immaculate College",
+    "type": "School"
+  },
+  {
+    "name": "Talamban Elementary School",
+    "type": "School"
+  },
+  {
+    "name": "Gaisano Grand Mall",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Aicila Suites Hotel",
+    "type": "Hotel"
+  },
+  {
+    "name": "University of San Carlos",
+    "campus": "Talamban",
+    "type": "USC Campus"
+  },
+  {
+    "name": "Banilad Town Center",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Gaisano Country Mall",
+    "type": "Mall / Grocery",
+    "terminal": true
+  },
+  {
+    "name": "University of Cebu Banilad Campus",
+    "type": "School"
+  },
+  {
+    "name": "Paradise Village Road",
+    "type": "Road"
+  },
+  {
+    "name": "Cebu Country Club",
+    "type": "Landmark"
+  },
+  {
+    "name": "Samantabhadra Institute",
+    "type": "School"
+  },
+  {
+    "name": "Waterfront Hotel",
+    "type": "Hotel"
+  },
+  {
+    "name": "P. Cabantan Street",
+    "type": "Road"
+  },
+  {
+    "name": "PAG-IBIG",
+    "type": "Government Office"
+  },
+  {
+    "name": "Insular Life Cebu Business Center",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Ayala Center Cebu",
+    "type": "Mall / Grocery",
+    "terminal": true
+  },
+  {
+    "name": "Hotel Elizabeth Cebu",
+    "type": "Hotel"
+  },
+  {
+    "name": "Asilo De La Milagrosa",
+    "type": "Church"
+  },
+  {
+    "name": "Colegio De La Imaculada Concepcion",
+    "type": "School"
+  },
+  {
+    "name": "Gen Echavez Street",
+    "type": "Road"
+  },
+  {
+    "name": "Allisons Inn",
+    "type": "Hotel"
+  },
+  {
+    "name": "Ramos Public Market",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "LS Pension House",
+    "type": "Hotel"
+  },
+  {
+    "name": "University of San Jose Recoletos",
+    "type": "School"
+  },
+  {
+    "name": "Gaisano Main",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "University of the Visayas",
+    "type": "School"
+  },
+  {
+    "name": "Vicente Gullas Street",
+    "type": "Road"
+  },
+  {
+    "name": "Dionsio Jakosalem Street",
+    "type": "Road"
+  },
+  {
+    "name": "Legaspi Street",
+    "type": "Road"
+  },
+  {
+    "name": "Progreso Street",
+    "type": "Road"
+  },
+  {
+    "name": "Carbon Public Market",
+    "type": "Mall / Grocery",
+    "terminal": true
+  }
+]
+
+    },
+    {
+      "id": "62B",
+      "name": "62B Route",
+      "from": "Pitos Terminal",
+      "to": "Carbon Public Market",
+      "landmarks": [
+        "Mall / Grocery",
+        "School",
+        "Terminal",
+        "USC Campus"
+      ],
+      "directional": false,
+      "waypoints": [
+  {
+    "name": "Pitos Terminal",
+    "type": "Terminal"
+  },
+  {
+    "name": "Bacayan",
+    "type": "Area"
+  },
+  {
+    "name": "Smeag",
+    "type": "School"
+  },
+  {
+    "name": "Sparta",
+    "type": "Landmark"
+  },
+  {
+    "name": "Pelish",
+    "type": "Landmark"
+  },
+  {
+    "name": "English School",
+    "type": "School"
+  },
+  {
+    "name": "Gaisano Grand Mall",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "Aicila Suites Hotel",
+    "type": "Hotel"
+  },
+  {
+    "name": "University of San Carlos",
+    "campus": "Talamban",
+    "type": "USC Campus"
+  },
+  {
+    "name": "Banilad Town Center",
+    "type": "Mall / Grocery"
+  },
+  {
+    "name": "University of Cebu Banilad Campus",
+    "type": "School"
+  },
+  {
+    "name": "Paradise Village Road",
+    "type": "Road"
+  },
+  {
+    "name": "Cebu Country Club",
+    "type": "Landmark"
+  },
+  {
+    "name": "Samantabhadra Institute",
+    "type": "School"
+  },
+  {
+    "name": "San Carlos Seminar Complex",
+    "type": "School"
+  },
+  {
+    "name": "Keppel Tower Cebu Business Park",
+    "type": "Building"
+  },
+  {
+    "name": "Ayala Center Cebu",
+    "type": "Mall / Grocery",
+    "terminal": true
+  },
+  {
+    "name": "Hotel Elizabeth Cebu",
+    "type": "Hotel"
+  },
+  {
+    "name": "Asilo De La Milagrosa",
+    "type": "Church"
+  },
+  {
+    "name": "Colegio De La Immaculada Concepcion",
+    "type": "School"
+  },
+  {
+    "name": "Gen Echavze Street",
+    "type": "Road"
+  },
+  {
+    "name": "Allisons Inn",
+    "type": "Hotel"
+  },
+  {
+    "name": "Sikatuna Street",
+    "type": "Road"
+  },
+  {
+    "name": "Colon Obelisk",
+    "type": "Terminal",
+    "terminal": true
+  },
+  {
+    "name": "Vicente Gullas Street",
+    "type": "Road"
+  },
+  {
+    "name": "Dionsio Jakosalem Street",
+    "type": "Road"
+  },
+  {
+    "name": "Legazpi Street",
+    "type": "Road"
+  },
+  {
+    "name": "Progreso Street",
+    "type": "Road"
+  },
+  {
+    "name": "Carbon Public Market",
+    "type": "Mall / Grocery",
+    "terminal": true
+  }
+]
+
+    }
+  ]
+}
