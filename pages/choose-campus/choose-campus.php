@@ -293,7 +293,7 @@
             <!-- Campus 1 -->
             <div class="campus-card">
                 <div class="campus-image-container">
-                    <img src="https://source.unsplash.com/random/400x300/?university,campus" alt="North Campus" class="campus-image">
+                    <img src="" alt="Talamban Campus" class="campus-image">
                     <div class="campus-overlay">
                         <p>Set this campus as your destination</p>
                         <button class="set-destination-btn">Set Destination</button>
@@ -301,15 +301,15 @@
                 </div>
                 <div class="campus-details">
                     <h3 class="campus-name">Talamban Campus</h3>
-                    <p class="campus-location">Stellar Heights, Orion District</p>
-                    <p class="campus-description">A serene campus known for its beautiful architecture and expansive green spaces.</p>
+                    <p class="campus-location">University of San Carlos, Nasipit, Talamban, Cebu City 6000</p>
+                    <p class="campus-description">The University of San Carlos Talamban campus in Cebu combines nature and modern design, set on a hill with lush trees and singing birds. Students often ride jeepneys to reach higher levels of the campus, adding a fun twist to their day. With fresh air, grassy fields, and friendly wild dogs and cats, it offers a relaxing yet vibrant atmosphere for learning.</p>
                 </div>
             </div>
             
             <!-- Campus 2 -->
             <div class="campus-card">
                 <div class="campus-image-container">
-                    <img src="https://source.unsplash.com/random/400x300/?college,modern" alt="South Campus" class="campus-image">
+                    <img src="" alt="Downtown Campus" class="campus-image">
                     <div class="campus-overlay">
                         <p>Set this campus as your destination</p>
                         <button class="set-destination-btn">Set Destination</button>
@@ -317,41 +317,11 @@
                 </div>
                 <div class="campus-details">
                     <h3 class="campus-name">Downtown Campus</h3>
-                    <p class="campus-location">Lunar Valley, Nova Region</p>
-                    <p class="campus-description">A modern campus with state-of-the-art facilities nestled in the heart of the technology district.</p>
+                    <p class="campus-location">University of San Carlos Main, Alcantara St, Cebu City, 6000 Cebu</p>
+                    <p class="campus-description">The University of San Carlos downtown campus in Cebu is located in the bustling heart of the city, surrounded by urban buildings and vibrant life. While it has a more traditional school setup with corridors and classrooms, there are still green spaces that add a touch of nature to the environment. Designed with business and law students in mind, the campus exudes a professional vibe, featuring uniform colors and a compact layout that fosters a focused and dynamic atmosphere for learning.</p>
                 </div>
             </div>
             
-            <!-- Campus 3 -->
-            <div class="campus-card">
-                <div class="campus-image-container">
-                    <img src="https://source.unsplash.com/random/400x300/?university,building" alt="East Campus" class="campus-image">
-                    <div class="campus-overlay">
-                        <p>Set this campus as your destination</p>
-                        <button class="set-destination-btn">Set Destination</button>
-                    </div>
-                </div>
-                <div class="campus-details">
-                    <h3 class="campus-name">South Campus</h3>
-                    <p class="campus-location">Cosmic Junction, Nebula Avenue</p>
-                    <p class="campus-description">A vibrant campus with a rich cultural scene and innovative research facilities.</p>
-                </div>
-            </div>
-            
-            <!-- Campus 4 -->
-            <div class="campus-card">
-                <div class="campus-image-container">
-                    <img src="https://source.unsplash.com/random/400x300/?campus,architecture" alt="West Campus" class="campus-image">
-                    <div class="campus-overlay">
-                        <p>Set this campus as your destination</p>
-                        <button class="set-destination-btn">Set Destination</button>
-                    </div>
-                </div>
-                <div class="campus-details">
-                    <h3 class="campus-name">North Campus</h3>
-                    <p class="campus-location">Astral Heights, Galaxy Boulevard</p>
-                    <p class="campus-description">A historic campus with cutting-edge facilities and a strong focus on innovation.</p>
-                </div>
             </div>
         </div>
     </div>
