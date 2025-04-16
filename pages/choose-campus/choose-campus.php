@@ -326,7 +326,7 @@
         </div>
     </div>
 
-      <script src="campus.js"></script>
+      <script src="choose-campus.js"></script>
   
 </body>
 </html>
