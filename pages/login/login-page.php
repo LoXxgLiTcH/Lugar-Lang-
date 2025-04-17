@@ -31,7 +31,7 @@
         <div class="signup-redirect">
             <div class="signup-redirect">
                 Don't have an account?
-                <a href="/registration/registration-page.php" class="signup-link">Sign up</a>
+                <a href="../registration/registration-page.php" class="signup-link">Sign up</a>
             </div>  </div>
     </div>
     <?php
@@ -48,7 +48,7 @@
         }
     }
     ?>
-    <script src="../js/login.js"></script>
+    <script src="../../js/auth/login.js"></script>
 
 
 </body>

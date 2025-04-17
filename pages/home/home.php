@@ -1,4 +1,3 @@
-
 <?php
 session_start();
 
@@ -23,36 +22,56 @@ if (!$user_id) {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name = $_POST["username"];
     $role = $_POST["role"];
-    $landmark = $_POST["landmark"];
+ 
+
     $photo_tmp = $_FILES["photo"]["tmp_name"];
     $photo = $_FILES["photo"]["name"];
     $ext = pathinfo($photo, PATHINFO_EXTENSION);
-    $allowed_types = ["jpg", "png", "jpeg"];
-    $target_path = "profile_uploads/" . $photo;
+    $allowed_types = ["jpg", "png", "jpeg", "gif"];
+    $target_path = "../profile_uploads/" . $photo;
 
-    if (in_array($ext, $allowed_types) && move_uploaded_file($photo_tmp, $target_path)) {
-        $stmt = $conn->prepare("UPDATE account_setup SET photo = ?, username = ?, role = ?, address = ?, has_completed_setup = 1 WHERE user_id = ?");
-        $stmt->bind_param("ssssi", $photo, $name, $role, $landmark, $user_id);
+    $photo_tmp = $_FILES["photo"]["tmp_name"];
+    $photo = $_FILES["photo"]["name"];
+    $ext = pathinfo($photo, PATHINFO_EXTENSION);
+    $allowed_types = ["jpg", "png", "jpeg", "gif"];
+    $upload_dir = "../../profile_uploads/";
+    $target_path = $upload_dir . $photo;
 
-        if ($stmt->execute()) {
-            echo "<script>
+    // Check if directory exists and is writable
+    if (!is_dir($upload_dir) || !is_writable($upload_dir)) {
+        echo "<script>alert('Upload directory does not exist or is not writable. Please contact the administrator.')</script>";
+        exit;
+    }
+
+    if (in_array($ext, $allowed_types)) {
+        if (move_uploaded_file($photo_tmp, $target_path)) {
+            // File uploaded successfully
+            $stmt = $conn->prepare("UPDATE account_info SET photo = ?, username = ?, role = ?, has_completed_setup = 1 WHERE user_id = ?");
+            $stmt->bind_param("sssi", $photo, $name, $role, $user_id);
+
+            if ($stmt->execute()) {
+                echo "<script>
                 document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(function() {
                         completeSetup();
                     }, 1000);
                 });
             </script>";
+            } else {
+                echo "<script>alert('Something went wrong. Please try again.')</script>";
+            }
+            $stmt->close();
         } else {
-            echo "<script>alert('Something went wrong. Please try again.')</script>";
+            echo "<script>alert('Failed to move uploaded file. Please try again.')</script>";
         }
-        $stmt->close();
     } else {
-        echo "<script>alert('Invalid photo file or upload failed.')</script>";
+        echo "<script>alert('Invalid photo file type. Only JPG, PNG, JPEG, and GIF are allowed.')</script>";
     }
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -80,20 +99,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
 
-        body, html {
+        body,
+        html {
             height: 100%;
             margin: 0;
             overflow: hidden;
         }
 
-  
+
         .homepage-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('public/images/placeholder-map.png'); 
+            background-image: url('../../public/images/placeholder-map.png');
             background-size: cover;
             background-position: center;
             filter: blur(5px);
@@ -133,8 +153,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .progress-bar {
@@ -179,7 +206,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             margin-bottom: 6px;
         }
 
-        input, select {
+        input,
+        select {
             width: 100%;
             padding: 12px 16px;
             border: 1px solid var(--neutral-light);
@@ -190,13 +218,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             background-color: var(--white);
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-light);
         }
 
-        input::placeholder, select::placeholder {
+        input::placeholder,
+        select::placeholder {
             color: var(--neutral-medium);
             opacity: 0.7;
         }
@@ -361,7 +391,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 padding: 40px 32px;
                 max-width: 480px;
             }
-            
+
             h2 {
                 font-size: 28px;
             }
@@ -374,22 +404,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     </style>
 </head>
+
 <body>
-  
-    
-    <!-- Homepage background -->
+
+
+
     <div class="homepage-background" id="homepageBackground"></div>
-    
-    <!-- Overlay with setup form -->
+
     <div class="overlay-container" id="overlayContainer">
         <div class="setup-container" id="setupContainer">
             <div class="progress-bar">
                 <div class="progress-fill"></div>
             </div>
-            
+
             <h2>Complete Your Profile</h2>
             <p>Let's personalize your Lugar Lang experience</p>
-            
+
             <form method="POST" id="setupForm" action="" enctype="multipart/form-data">
                 <div class="photo-upload">
                     <div class="photo-preview" id="photoPreview">
@@ -401,13 +431,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <p style="font-size: 12px; margin-top: 6px; color: var(--neutral-medium);">For easier recognition by classmates :P</p>
                     </div>
                 </div>
-                
+
                 <div class="form-item">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" placeholder="Choose a unique username">
                 </div>
-                
-                
+
+
                 <div class="form-item">
                     <label for="role">Year Level / Role</label>
                     <select id="role" name="role">
@@ -418,93 +448,84 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <option value="4th">4th Year Student</option>
                     </select>
                 </div>
-                
-                <div class="form-item">
-                    <label for="landmark">Home Barangay / Pickup Landmark <span class="optional-label">Optional</span></label>
-                    <input type="text" id="landmark" name="landmark" placeholder="e.g., Colon, Carbon, Mabolo">
-                </div>
-                
+
                 <button type="submit" name="submit" class="submit-button" id="submitButton">Complete Setup</button>
             </form>
         </div>
     </div>
 
     <script>
-        // Upload photo functionality
         const uploadBtn = document.getElementById('uploadBtn');
         const photoInput = document.getElementById('photoInput');
         const photoPreview = document.getElementById('photoPreview');
-        
+
         uploadBtn.addEventListener('click', function(event) {
             photoInput.click();
         });
-        
+
         photoInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    photoPreview.innerHTML = ''; 
+                    photoPreview.innerHTML = '';
                     photoPreview.innerHTML = `<img src="${e.target.result}" alt="Profile Photo">`;
                 }
                 reader.readAsDataURL(file);
             }
         });
-        
-        // Form validation
+
+
         document.getElementById("setupForm").addEventListener("submit", function(event) {
             const username = document.getElementById("username").value;
             const role = document.getElementById("role").value;
-            
+
             let isValid = true;
             let errorMessage = "";
-            
+
             if (!username) {
                 event.preventDefault();
                 errorMessage += "Username is required.\n";
                 isValid = false;
             }
-            
 
-            
-            
             if (!role) {
                 event.preventDefault();
                 errorMessage += "Please select your role.\n";
                 isValid = false;
             }
-            
+
             if (!isValid) {
                 alert(errorMessage);
             }
-            // If valid, form will submit normally and PHP will handle the rest
+
         });
-        
-        // Function to handle completion animation
+
+
         function completeSetup() {
             const setupContainer = document.getElementById('setupContainer');
             const overlayContainer = document.getElementById('overlayContainer');
             const homepageBackground = document.getElementById('homepageBackground');
-            
-            // Add slide down animation class
+
+
             setupContainer.classList.add('slide-down');
-            
-            // Remove blur from background
+
             homepageBackground.style.filter = 'blur(0px)';
-            
-            // Fade out overlay
+
+
             setTimeout(function() {
                 overlayContainer.style.opacity = '0';
-                
-                // Remove overlay after animation completes
+
+
                 setTimeout(function() {
                     overlayContainer.style.display = 'none';
                 }, 800);
             }, 300);
         }
-        
+
         // For testing purposes (comment out or remove in production)
         // setTimeout(completeSetup, 3000);
     </script>
 </body>
+
 </html>
