@@ -31,7 +31,7 @@
         <div class="signup-redirect">
             <div class="signup-redirect">
                 Don't have an account?
-                <a href="../registration/registration-page.php" class="signup-link">Sign up</a>
+                <a href="../registration/registration_page.php" class="signup-link">Sign up</a>
             </div>  </div>
     </div>
     <?php
@@ -41,7 +41,7 @@
         $password = $_POST['password'] ?? '';
 
         if ($email === 'test@example.com' && $password === 'password123') {
-            header('Location: /splash.html');
+            header('Location: ../splash/splash.html');
             exit();
         } else {
             echo '<div class="error">Invalid email or password.</div>';

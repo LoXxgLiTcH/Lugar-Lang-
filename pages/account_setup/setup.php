@@ -1,12 +1,124 @@
+<?php
+session_start();
+
+// Database connection
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+try {
+    $conn = new mysqli("localhost", "root", "", "lugarlangdb");
+    $conn->set_charset("utf8mb4");
+} catch (Exception $e) {
+    echo "<script>alert('Database connection failed. Please try again later.');</script>";
+    exit;
+}
+
+// Check user session
+$user_id = $_SESSION["user_id"] ?? null;
+if (!$user_id) {
+    header("Location: ../login/login-page.php");    
+    exit();
+}
+
+// Check if user has default destination
+$check_query = "SELECT has_default_destination, def_campus FROM account_info WHERE user_id = ?";
+$stmt = mysqli_prepare($conn, $check_query);
+mysqli_stmt_bind_param($stmt, "i", $user_id);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_store_result($stmt);
+
+if(mysqli_stmt_num_rows($stmt) > 0) {
+    mysqli_stmt_bind_result($stmt, $has_default, $default_campus);
+    mysqli_stmt_fetch($stmt);
+    
+    // If user has default destination and not changing it, redirect to home
+    if($has_default == 1 && !isset($_GET['change'])) {
+        header("Location: ../home/home.php");
+        exit();
+    }
+}
+
+// Handle AJAX request to set default destination
+if(isset($_POST['set_default_campus'])) {
+    $campus = $_POST['campus'];
+    
+    $update_query = "UPDATE user_info SET def_campus = ?, has_default_destination = 1 WHERE user_id = ?";
+    $update_stmt = mysqli_prepare($conn, $update_query);
+    mysqli_stmt_bind_param($update_stmt, "si", $campus, $user_id);
+    
+    if(mysqli_stmt_execute($update_stmt)) {
+        echo json_encode(['success' => true, 'message' => 'Default destination updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Failed to update default destination']);
+    }
+    
+    mysqli_stmt_close($update_stmt);
+    exit();
+}
+
+// Handle profile setup form submission
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
+    $name = $_POST["username"];
+    $role = $_POST["role"];
+
+    $photo_tmp = $_FILES["photo"]["tmp_name"];
+    $photo = $_FILES["photo"]["name"];
+    $ext = pathinfo($photo, PATHINFO_EXTENSION);
+    $allowed_types = ["jpg", "png", "jpeg", "gif"];
+    $upload_dir = "../../profile_uploads/";
+    $target_path = $upload_dir . $photo;
+
+    // Check if directory exists and is writable
+    if (!is_dir($upload_dir) || !is_writable($upload_dir)) {
+        echo "<script>alert('Upload directory does not exist or is not writable. Please contact the administrator.')</script>";
+        exit;
+    }
+
+    if (in_array($ext, $allowed_types)) {
+        if (move_uploaded_file($photo_tmp, $target_path)) {
+            // File uploaded successfully
+            $stmt = $conn->prepare("UPDATE account_info SET photo = ?, username = ?, role = ?, has_completed_setup = 1 WHERE user_id = ?");
+            $stmt->bind_param("sssi", $photo, $name, $role, $user_id);
+
+            if ($stmt->execute()) {
+                echo "<script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(function() {
+                        completeSetup();
+                    }, 1000);
+                });
+            </script>";
+            } else {
+                echo "<script>alert('Something went wrong. Please try again.')</script>";
+            }
+            $stmt->close();
+        } else {
+            echo "<script>alert('Failed to move uploaded file. Please try again.')</script>";
+        }
+    } else {
+        echo "<script>alert('Invalid photo file type. Only JPG, PNG, JPEG, and GIF are allowed.')</script>";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Campus | Lugar Lang</title>
-
+    <title>Welcome to Lugar Lang</title>
     <style>
         :root {
+            --primary: #FF7F2A;
+            --primary-light: #FFD6BC;
+            --secondary: #2EA355;
+            --secondary-light: #C5EACD;
+            --neutral-dark: #333333;
+            --neutral-medium: #9E9E9E;
+            --neutral-light: #F4F4F4;
+            --white: #FFFFFF;
+            --error: #EF5350;
+            --shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
             --primary-blue: #1e3a8a;
             --accent-orange: #ff6b35;
             --accent-green: #4caf50;
@@ -14,8 +126,20 @@
             --light-orange: rgba(255, 107, 53, 0.1);
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
         body {
-            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background: linear-gradient(135deg, #121212 0%, var(--primary-blue) 100%);
             color: #333;
             min-height: 100vh;
@@ -24,7 +148,6 @@
             justify-content: center;
             padding: 15px;
             position: relative;
-            overflow: hidden;
         }
 
         body::before {
@@ -39,6 +162,7 @@
             z-index: -1;
         }
 
+        /* Campus Selection Page Styles */
         .page-container {
             width: 100%;
             background-color: rgba(255, 255, 255, 0.95);
@@ -47,6 +171,7 @@
             padding: 20px;
             backdrop-filter: blur(10px);
             border-top: 4px solid var(--accent-orange);
+            transition: filter 0.8s ease;
         }
 
         .header {
@@ -206,7 +331,6 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Pin as default destination button styles */
         .pin-destination {
             position: absolute;
             bottom: 15px;
@@ -276,7 +400,6 @@
             opacity: 1;
         }
 
-        /* Success notification styles */
         .notification {
             position: fixed;
             top: 20px;
@@ -303,7 +426,211 @@
             height: 20px;
         }
 
-        /* Media queries for larger screens */
+        /* Profile Setup Overlay Styles */
+        .overlay-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.4);
+            transition: opacity 0.8s ease;
+        }
+
+        .setup-container {
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 32px 24px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .setup-container.slide-down {
+            transform: translateY(150vh);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: var(--neutral-light);
+            margin-bottom: 24px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 70%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+        }
+
+        .setup-container h2 {
+            color: var(--neutral-dark);
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .setup-container p {
+            color: var(--neutral-medium);
+            font-size: 16px;
+            margin-bottom: 28px;
+        }
+
+        .form-item {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            color: var(--neutral-dark);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--neutral-light);
+            border-radius: var(--radius);
+            font-size: 16px;
+            color: var(--neutral-dark);
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        input::placeholder,
+        select::placeholder {
+            color: var(--neutral-medium);
+            opacity: 0.7;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239e9e9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
+
+        .photo-upload {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .photo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--neutral-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--primary-light);
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-placeholder {
+            color: var(--neutral-medium);
+            font-size: 24px;
+        }
+
+        .upload-btn {
+            padding: 10px 16px;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-btn:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .upload-btn:active {
+            transform: translateY(1px);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius);
+            background-color: var(--primary);
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background-color: #E86C1A;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 127, 42, 0.3);
+        }
+
+        .submit-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(255, 127, 42, 0.3);
+        }
+
+        .setup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        /* Responsive adjustments */
         @media (min-width: 576px) {
             .page-container {
                 padding: 30px;
@@ -334,6 +661,15 @@
             
             .campus-image-container {
                 height: 200px;
+            }
+            
+            .setup-container {
+                padding: 40px 32px;
+                max-width: 480px;
+            }
+
+            .setup-container h2 {
+                font-size: 28px;
             }
         }
 
@@ -372,6 +708,12 @@
             }
         }
 
+        @media (min-width: 1024px) {
+            .setup-container {
+                max-width: 520px;
+            }
+        }
+
         @media (min-width: 1200px) {
             .page-container {
                 max-width: 1140px;
@@ -381,71 +723,16 @@
                 height: 240px;
             }
         }
+
+        /* Blurred state for when overlay is showing */
+        .page-container.blurred {
+            filter: blur(5px);
+        }
     </style>
 </head>
+
 <body>
-    <?php
-    session_start();
-    
-
-    if(!isset($_SESSION['user_id'])) {
-        header("Location: ../login/login-page.php");    
-        exit();
-    }
-    
-    $db_server = "localhost";
-    $db_user = "root";
-    $db_pass = "";
-    $db_name = "lugarlangdb";
-    $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
-    if (!$conn) {
-        echo "<script>alert('Database connection failed. Please try again later.');</script>";
-        exit;
-    }
-    
-    if(!$conn){
-        echo "<script>alert('Database connection failed. Please try again later.');</script>";
-        exit;
-    }
-    
-   
-    $check_query = "SELECT has_default_destination, def_campus FROM user_info WHERE user_id = ?";
-    $stmt = mysqli_prepare($conn, $check_query);
-    mysqli_stmt_bind_param($stmt, "i", $user_id);
-    mysqli_stmt_execute($stmt);
-    mysqli_stmt_store_result($stmt);
-    
-    if(mysqli_stmt_num_rows($stmt) > 0) {
-        mysqli_stmt_bind_result($stmt, $has_default, $default_campus);
-        mysqli_stmt_fetch($stmt);
-        
-   
-        if($has_default == 1 && !isset($_GET['change'])) {
-            header("Location: ../home/home.php");
-            exit();
-        }
-    }
-    
-    // Handle AJAX request to set default destination
-    if(isset($_POST['set_default_campus'])) {
-        $campus = $_POST['campus'];
-        
-        $update_query = "UPDATE user_info SET def_campus = ?, has_default_destination = 1 WHERE user_id = ?";
-        $update_stmt = mysqli_prepare($conn, $update_query);
-        mysqli_stmt_bind_param($update_stmt, "si", $campus, $user_id);
-        
-        if(mysqli_stmt_execute($update_stmt)) {
-            echo json_encode(['success' => true, 'message' => 'Default destination updated successfully']);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to update default destination']);
-        }
-        
-        mysqli_stmt_close($update_stmt);
-        exit();
-    }
-    ?>
-
-    <div class="page-container">
+    <div class="page-container" id="pageContainer">
         <div class="header">
             <h2>Choose Your Campus</h2>
             <p>Select a destination campus to continue your journey with Lugar Lang!</p>
@@ -455,7 +742,7 @@
             <!-- Campus 1 -->
             <div class="campus-card">
                 <div class="campus-image-container">
-                    <img src="../public/images/USC_Talamban_Campus.jpg" alt="Talamban Campus" class="campus-image">
+                    <img src="../../public/images/USC_Talamban_Campus.jpg" alt="Talamban Campus" class="campus-image">
                     <div class="campus-overlay">
                         <p>Set this campus as your destination</p>
                         <button class="set-destination-btn" data-campus="talamban">Set Destination</button>
@@ -478,7 +765,7 @@
             <!-- Campus 2 -->
             <div class="campus-card">
                 <div class="campus-image-container">
-                    <img src="../public/images/USC_Downtown_Campus.jpg" alt="Downtown Campus" class="campus-image">
+                    <img src="../../public/images/USC_Downtown_Campus.jpg" alt="Downtown Campus" class="campus-image">
                     <div class="campus-overlay">
                         <p>Set this campus as your destination</p>
                         <button class="set-destination-btn" data-campus="downtown">Set Destination</button>
@@ -500,6 +787,48 @@
         </div>
     </div>
 
+    <!-- Profile Setup Overlay -->
+    <div class="overlay-container" id="overlayContainer">
+        <div class="setup-container" id="setupContainer">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+
+            <h2>Complete Your Profile</h2>
+            <p>Let's personalize your Lugar Lang experience</p>
+
+            <form method="POST" id="setupForm" action="" enctype="multipart/form-data">
+                <div class="photo-upload">
+                    <div class="photo-preview" id="photoPreview">
+                        <div class="photo-placeholder">+</div>
+                    </div>
+                    <div>
+                        <button type="button" class="upload-btn" id="uploadBtn">Upload Photo</button>
+                        <input type="file" name="photo" id="photoInput" accept="image/*" style="display: none;">
+                        <p style="font-size: 12px; margin-top: 6px; color: var(--neutral-medium);">For easier recognition by classmates :P</p>
+                    </div>
+                </div>
+
+                <div class="form-item">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Choose a unique username">
+                </div>
+
+                <div class="form-item">
+                    <label for="role">Year Level / Role</label>
+                    <select id="role" name="role">
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="1st">1st Year Student</option>
+                        <option value="2nd">2nd Year Student</option>
+                        <option value="3rd">3rd Year Student</option>
+                        <option value="4th">4th Year Student</option>
+                    </select>
+                </div>
+
+                <button type="submit" name="submit" class="submit-button" id="submitButton">Complete Setup</button>
+            </form>
+        </div>
+    </div>
 
     <div class="notification" id="notification">
         <svg class="notification-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -507,80 +836,8 @@
         </svg>
         <span id="notification-message">Default Campus set successfully!</span>
     </div>
+    <script src="setup.js">$</script>
+    <script src="choose_campus.js">$</script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle regular destination selection
-            const destinationButtons = document.querySelectorAll('.set-destination-btn');
-            destinationButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const campus = this.getAttribute('data-campus');
-                    window.location.href = `home.php?campus=${campus}`;
-                });
-            });
-            
-            // Handle pin as default destination
-            const pinButtons = document.querySelectorAll('.pin-destination');
-            pinButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const campus = this.getAttribute('data-campus');
-                    setDefaultDestination(campus);
-                    
-                    // Update UI to show active pin
-                    pinButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-            
-            function setDefaultDestination(campus) {
-                // Create form data
-                const formData = new FormData();
-                formData.append('set_default_campus', true);
-                formData.append('campus', campus);
-                
-                // Send AJAX request
-                fetch('choose-campus.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if(data.success) {
-                        showNotification(data.message);
-                        
-                        // Redirect to homepage after 2 seconds
-                        setTimeout(() => {
-                            window.location.href = 'home.php';
-                        }, 2000);
-                    } else {
-                        showNotification(data.message, false);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    showNotification('An error occurred. Please try again.', false);
-                });
-            }
-            
-            function showNotification(message, success = true) {
-                const notification = document.getElementById('notification');
-                const notificationMessage = document.getElementById('notification-message');
-                
-                // Set message and styling
-                notificationMessage.textContent = message;
-                notification.style.backgroundColor = success ? 'var(--accent-green)' : 'var(--error)';
-                
-                // Show notification
-                notification.classList.add('show');
-                
-                // Hide after 5 seconds
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 5000);
-            }
-        });
-    </script>
 </body>
 </html>
-
-

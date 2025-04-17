@@ -37,6 +37,8 @@
            if(mysqli_stmt_execute($stmt2)){
                echo "<script>alert('Your Files are Uploaded')</script>";
                mysqli_stmt_close($stmt2);
+               header("Location: ../account_setup/account_setup.php");
+               exit;
            }
            else{
                echo "<script>alert('Failed to insert in Account Setup')</script>";
@@ -92,9 +94,9 @@
         
         <div class="login-redirect">
             Already have an account?
-            <a href="../login/login-page.php" class="login-link">Log in</a>
+            <a href="../login/login_page.php" class="login-link">Log in</a>
         </div>
     </div>
-    <script src="../js/registration.js"></script>
+    <script src="../../js/auth/register.js" ></script> 
 </body>
 </html>
