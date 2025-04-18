@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle pin button clicks
     pinButtons.forEach(button => {
         button.addEventListener('click', function() {
+            console.log("Something");
             const campus = this.getAttribute('data-campus');
             setDefaultCampus(campus);
         });
@@ -88,11 +89,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Function to be called after profile setup is completed
-function completeSetup() {
-    document.getElementById('setupContainer').classList.add('slide-down');
-    document.getElementById('pageContainer').classList.remove('blurred');
-    setTimeout(() => {
-        document.getElementById('overlayContainer').style.display = 'none';
-    }, 800);
-}

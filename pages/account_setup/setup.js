@@ -47,11 +47,11 @@ document
 function completeSetup() {
   const setupContainer = document.getElementById("setupContainer");
   const overlayContainer = document.getElementById("overlayContainer");
-  const homepageBackground = document.getElementById("homepageBackground");
+  const pageBackground = document.getElementById("pageContainer");
 
   setupContainer.classList.add("slide-down");
 
-  homepageBackground.style.filter = "blur(0px)";
+  pageBackground.style.filter = "blur(0px)";
 
   setTimeout(function () {
     overlayContainer.style.opacity = "0";
@@ -63,4 +63,4 @@ function completeSetup() {
 }
 
 // For testing purposes (comment out or remove in production)
-// setTimeout(completeSetup, 3000);
+setTimeout(completeSetup, 3000);

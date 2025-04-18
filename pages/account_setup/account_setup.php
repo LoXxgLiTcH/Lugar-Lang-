@@ -106,7 +106,632 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Lugar Lang!</title>
-    <!-- Your existing styles here -->
+    <style>
+        :root {
+            --primary: #FF7F2A;
+            --primary-light: #FFD6BC;
+            --secondary: #2EA355;
+            --secondary-light: #C5EACD;
+            --neutral-dark: #333333;
+            --neutral-medium: #9E9E9E;
+            --neutral-light: #F4F4F4;
+            --white: #FFFFFF;
+            --error: #EF5350;
+            --shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --transition: all 0.3s ease;
+            --primary-blue: #1e3a8a;
+            --accent-orange: #ff6b35;
+            --accent-green: #4caf50;
+            --light-green: rgba(76, 175, 80, 0.1);
+            --light-orange: rgba(255, 107, 53, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            background: linear-gradient(135deg, #121212 0%, var(--primary-blue) 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(white 1px, transparent 0);
+            background-size: 50px 50px;
+            background-position: -25px -25px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Campus Selection Page Styles */
+        .page-container {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border-top: 4px solid var(--accent-orange);
+            transition: filter 0.8s ease;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+            position: relative;
+            display: inline-block;
+        }
+
+        .header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-green));
+            border-radius: 3px;
+        }
+
+        .header p {
+            color: #666;
+            margin: 0 auto;
+            max-width: 90%;
+        }
+
+        .campus-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .campus-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+            height: 100%;
+            border-left: 3px solid var(--accent-green);
+            position: relative;
+        }
+
+        .campus-card:nth-child(even) {
+            border-left: 3px solid var(--accent-orange);
+        }
+
+        .campus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .campus-image-container {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .campus-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease;
+        }
+
+        .campus-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8), rgba(76, 175, 80, 0.6));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .campus-image-container:hover .campus-image {
+            filter: blur(3px);
+        }
+
+        .campus-image-container:hover .campus-overlay {
+            opacity: 1;
+        }
+
+        .campus-details {
+            padding: 15px;
+            background: linear-gradient(to bottom, white, var(--light-green));
+        }
+
+        .campus-card:nth-child(even) .campus-details {
+            background: linear-gradient(to bottom, white, var(--light-orange));
+        }
+
+        .campus-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-blue);
+        }
+
+        .campus-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .campus-location::before {
+            content: '•';
+            color: var(--accent-orange);
+            margin-right: 5px;
+            font-size: 1.2rem;
+        }
+
+        .campus-card:nth-child(even) .campus-location::before {
+            color: var(--accent-green);
+        }
+
+        .campus-description {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .set-destination-btn {
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .campus-card:nth-child(even) .set-destination-btn {
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-orange));
+        }
+
+        .set-destination-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .pin-destination {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: white;
+            border: 2px solid var(--accent-green);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .campus-card:nth-child(even) .pin-destination {
+            border-color: var(--accent-orange);
+        }
+
+        .pin-destination:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .pin-destination svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent-green);
+            transition: fill 0.3s ease;
+        }
+
+        .campus-card:nth-child(even) .pin-destination svg {
+            fill: var(--accent-orange);
+        }
+
+        .pin-destination.active {
+            background-color: var(--accent-green);
+        }
+
+        .campus-card:nth-child(even) .pin-destination.active {
+            background-color: var(--accent-orange);
+        }
+
+        .pin-destination.active svg {
+            fill: white;
+        }
+
+        .pin-tooltip {
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .pin-destination:hover .pin-tooltip {
+            opacity: 1;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--accent-green);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Profile Setup Overlay Styles */
+        .overlay-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.4);
+            transition: opacity 0.8s ease;
+        }
+
+        .setup-container {
+            width: 100%;
+            max-width: 420px;
+            background-color: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 32px 24px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.5s ease-out;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .setup-container.slide-down {
+            transform: translateY(150vh);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: var(--neutral-light);
+            margin-bottom: 24px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 70%;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 2px;
+        }
+
+        .setup-container h2 {
+            color: var(--neutral-dark);
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .setup-container p {
+            color: var(--neutral-medium);
+            font-size: 16px;
+            margin-bottom: 28px;
+        }
+
+        .form-item {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            color: var(--neutral-dark);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--neutral-light);
+            border-radius: var(--radius);
+            font-size: 16px;
+            color: var(--neutral-dark);
+            transition: var(--transition);
+            background-color: var(--white);
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        input::placeholder,
+        select::placeholder {
+            color: var(--neutral-medium);
+            opacity: 0.7;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239e9e9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 16px;
+        }
+
+        .photo-upload {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .photo-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--neutral-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--primary-light);
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-placeholder {
+            color: var(--neutral-medium);
+            font-size: 24px;
+        }
+
+        .upload-btn {
+            padding: 10px 16px;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .upload-btn:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .upload-btn:active {
+            transform: translateY(1px);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius);
+            background-color: var(--primary);
+            color: var(--white);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .submit-button:hover {
+            background-color: #E86C1A;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(255, 127, 42, 0.3);
+        }
+
+        .submit-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(255, 127, 42, 0.3);
+        }
+
+        .setup-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        /* Responsive adjustments */
+        @media (min-width: 576px) {
+            .page-container {
+                padding: 30px;
+                max-width: 540px;
+            }
+
+            .header p {
+                max-width: 80%;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .page-container {
+                padding: 35px;
+                max-width: 720px;
+            }
+
+            .campus-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+
+            .campus-card {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .campus-image-container {
+                height: 200px;
+            }
+
+            .setup-container {
+                padding: 40px 32px;
+                max-width: 480px;
+            }
+
+            .setup-container h2 {
+                font-size: 28px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .page-container {
+                padding: 40px;
+                max-width: 960px;
+            }
+
+            .campus-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 30px;
+            }
+
+            .campus-card {
+                flex-direction: row;
+                height: 220px;
+            }
+
+            .campus-image-container {
+                width: 40%;
+                height: 100%;
+            }
+
+            .campus-details {
+                width: 60%;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            .pin-destination {
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .setup-container {
+                max-width: 520px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .page-container {
+                max-width: 1140px;
+            }
+
+            .campus-card {
+                height: 240px;
+            }
+        }
+
+        /* Blurred state for when overlay is showing */
+        .page-container.blurred {
+            filter: blur(5px);
+        }
+    </style>
 </head>
 
 <body>

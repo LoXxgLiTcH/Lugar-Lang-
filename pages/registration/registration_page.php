@@ -4,50 +4,90 @@
    $db_user = "root";
    $db_pass = "";
    $db_name = "lugarlangdb";
-   $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
-
-   if(!$conn){
+   
+   mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Enable better error reporting
+   
+   try {
+       $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
+       $conn->set_charset("utf8mb4"); // Set charset for better security
+   } catch (Exception $e) {
        echo "<script>alert('Database connection failed. Please try again later.');</script>";
        exit;
    }
 
    if(isset($_POST["submitBtn"])){
-       $name = $_POST["fullName"];
-       $email = $_POST["email"];
+       $name = trim($_POST["fullName"]);
+       $email = trim($_POST["email"]);
        $pass = $_POST["password"];
        $confPass = $_POST["confirmPassword"];
        
-       $passHash = password_hash($pass, PASSWORD_DEFAULT);
-
-       $stmt = mysqli_prepare($conn, "INSERT INTO registration (name, email, password) VALUES ( ?, ?, ? )") ;
-       mysqli_stmt_bind_param($stmt, "sss", $name, $email, $passHash);
-
+       // Validation
        if (empty($name) || empty($email) || empty($pass) || empty($confPass)) {
            echo "<script>alert('All fields are required.')</script>";
            exit;
        }
-
-       if(mysqli_stmt_execute($stmt)){
-           $user_id = mysqli_insert_id($conn);
-           $_SESSION["user_id"] = $user_id;
        
-           $stmt2 = mysqli_prepare($conn, "INSERT INTO account_info (user_id) VALUES (?)") ;
-           mysqli_stmt_bind_param($stmt2, "i", $user_id);
+       // Check if passwords match
+       if($pass !== $confPass) {
+           echo "<script>alert('Passwords do not match.')</script>";
+           exit;
+       }
+       
+       // Check if email already exists
+       $check_email = mysqli_prepare($conn, "SELECT email FROM registration WHERE email = ?");
+       mysqli_stmt_bind_param($check_email, "s", $email);
+       mysqli_stmt_execute($check_email);
+       mysqli_stmt_store_result($check_email);
+       
+       if(mysqli_stmt_num_rows($check_email) > 0) {
+           echo "<script>alert('Email already exists. Please use a different email.')</script>";
+           mysqli_stmt_close($check_email);
+           exit;
+       }
+       mysqli_stmt_close($check_email);
+       
+       // Hash password
+       $passHash = password_hash($pass, PASSWORD_DEFAULT);
 
-           if(mysqli_stmt_execute($stmt2)){
-               echo "<script>alert('Registered Successfully!')</script>";
-               mysqli_stmt_close($stmt2);
-               header("Location: ../account_setup/account_setup.php");
-               exit;
+       // Begin transaction to ensure data consistency
+       mysqli_begin_transaction($conn);
+       
+       try {
+           // Insert into registration table
+           $stmt = mysqli_prepare($conn, "INSERT INTO registration (name, email, password) VALUES (?, ?, ?)");
+           mysqli_stmt_bind_param($stmt, "sss", $name, $email, $passHash);
+           
+           if(mysqli_stmt_execute($stmt)){
+               $user_id = mysqli_insert_id($conn);
+               $_SESSION["user_id"] = $user_id;
+               mysqli_stmt_close($stmt);
+               
+               // Insert into account_info table with default values explicitly set to 0/false
+               $stmt2 = mysqli_prepare($conn, "INSERT INTO account_info (user_id, has_default_destination, has_completed_setup) VALUES (?, 0, 0)");
+               mysqli_stmt_bind_param($stmt2, "i", $user_id);
+               
+               if(mysqli_stmt_execute($stmt2)){
+                   mysqli_stmt_close($stmt2);
+                   
+                   // Commit the transaction
+                   mysqli_commit($conn);
+                   
+                   echo "<script>
+                       alert('Registered Successfully!');
+                       window.location.href = '../account_setup/account_setup.php';
+                   </script>";
+                   exit;
+               } else {
+                   throw new Exception("Failed to insert account information");
+               }
+           } else {
+               throw new Exception("Failed to register user");
            }
-           else{
-               echo "<script>alert('Failed to insert in Account Setup')</script>";
-           }
+       } catch (Exception $e) {
+           // Rollback transaction on error
+           mysqli_rollback($conn);
+           echo "<script>alert('Registration failed: " . $e->getMessage() . "')</script>";
        }
-       else{
-           echo "<script>alert('Something is Wrong')</script>";
-       }
-       mysqli_stmt_close($stmt);
    }
 ?>
 <!DOCTYPE html>
