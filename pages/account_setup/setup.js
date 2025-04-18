@@ -63,4 +63,4 @@ function completeSetup() {
 }
 
 // For testing purposes (comment out or remove in production)
-setTimeout(completeSetup, 3000);
+// setTimeout(completeSetup, 3000);

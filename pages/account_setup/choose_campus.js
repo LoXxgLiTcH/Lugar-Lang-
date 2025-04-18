@@ -1,12 +1,11 @@
-import { saveDestination } from './utils/storage.js';
+// import { saveDestination } from './utils/storage.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const pinButtons = document.querySelectorAll('.pin-destination');
     const setDestinationBtns = document.querySelectorAll('.set-destination-btn');
     const notification = document.getElementById('notification');
     const notificationMessage = document.getElementById('notification-message');
-
-    // Handle pin button clicks
+  
     pinButtons.forEach(button => {
         button.addEventListener('click', function() {
             console.log("Something");
@@ -15,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Handle destination button clicks
+
     setDestinationBtns.forEach(button => {
         button.addEventListener('click', function() {
             const campus = this.getAttribute('data-campus');
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Update UI to show the active pin
+         
                 pinButtons.forEach(btn => {
                     if (btn.getAttribute('data-campus') === campus) {
                         btn.classList.add('active');
@@ -65,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
                 showNotification('Default campus set successfully!');
-                // Redirect after a short delay
+             
                 setTimeout(() => {
                     window.location.href = '../splash/splash.html';
                 }, 2000);
