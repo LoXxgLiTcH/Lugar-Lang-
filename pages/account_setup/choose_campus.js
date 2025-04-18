@@ -1,88 +1,98 @@
-
 import { saveDestination } from './utils/storage.js';
 
-document.addEventListener("DOMContentLoaded", () => {
-    const buttons = document.querySelectorAll(".set-destination-btn");
+document.addEventListener('DOMContentLoaded', () => {
     const pinButtons = document.querySelectorAll('.pin-destination');
-
-    buttons.forEach(button => {
-        button.addEventListener("click", handleDestinationClick);
-    });
-
-    pinButtons.forEach(button => {
-        button.addEventListener("click", handlePinClick);
-    });
-});
-
-function handleDestinationClick(event) {
-    const button = event.currentTarget;
-    const card = button.closest(".campus-card");
-
-    if (!card) return;
-
-    const campusName = card.querySelector(".campus-name")?.textContent.trim();
-    const campusLocation = card.querySelector(".campus-location")?.textContent.trim();
-
-    if (!campusName || !campusLocation) {
-        console.error("Missing campus data.");
-        return;
-    }
-
-    const destinationData = { name: campusName, location: campusLocation };
-    saveDestination(destinationData);
-
-    alert(`Destination set: ${campusName}`);
-
-    // Uncomment the following line if you want to redirect after setting the destination
-    // window.location.href = "map.php";
-}
-
-function handlePinClick(event) {
-    const button = event.currentTarget;
-    const campus = button.getAttribute('data-campus');
-
-    setDefaultDestination(campus);
-
-    // Update UI to show active pin
-    document.querySelectorAll('.pin-destination').forEach(btn => btn.classList.remove('active'));
-    button.classList.add('active');
-}
-
-function setDefaultDestination(campus) {
-    const formData = new FormData();
-    formData.append('set_default_campus', true);
-    formData.append('campus', campus);
-
-    fetch('choose-campus.php', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        showNotification(data.message, data.success);
-
-        if (data.success) {
-            setTimeout(() => {
-                window.location.href = 'home.php';
-            }, 2000);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        showNotification('An error occurred. Please try again.', false);
-    });
-}
-
-function showNotification(message, success = true) {
+    const setDestinationBtns = document.querySelectorAll('.set-destination-btn');
     const notification = document.getElementById('notification');
     const notificationMessage = document.getElementById('notification-message');
 
-    notificationMessage.textContent = message;
-    notification.style.backgroundColor = success ? 'var(--accent-green)' : 'var(--error)';
+    // Handle pin button clicks
+    pinButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const campus = this.getAttribute('data-campus');
+            setDefaultCampus(campus);
+        });
+    });
 
-    notification.classList.add('show');
+    // Handle destination button clicks
+    setDestinationBtns.forEach(button => {
+        button.addEventListener('click', function() {
+            const campus = this.getAttribute('data-campus');
+            setSessionCampus(campus);
+        });
+    });
 
+    function setSessionCampus(campus) {
+        fetch('choose_campus.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `campus=${campus}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = '../splash/splash.html';
+            } else {
+                showNotification('Failed to set destination. Please try again.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred. Please try again.', 'error');
+        });
+    }
+
+    function setDefaultCampus(campus) {
+        fetch('set_default_campus.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `set_default_campus=true&campus=${campus}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update UI to show the active pin
+                pinButtons.forEach(btn => {
+                    if (btn.getAttribute('data-campus') === campus) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                showNotification('Default campus set successfully!');
+                // Redirect after a short delay
+                setTimeout(() => {
+                    window.location.href = '../splash/splash.html';
+                }, 2000);
+            } else {
+                showNotification('Failed to set default campus. Please try again.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('An error occurred. Please try again.', 'error');
+        });
+    }
+
+    function showNotification(message, type = 'success') {
+        notificationMessage.textContent = message;
+        notification.className = 'notification show';
+        notification.style.backgroundColor = type === 'error' ? '#EF5350' : '#4CAF50';
+        setTimeout(() => {
+            notification.className = 'notification';
+        }, 3000);
+    }
+});
+
+// Function to be called after profile setup is completed
+function completeSetup() {
+    document.getElementById('setupContainer').classList.add('slide-down');
+    document.getElementById('pageContainer').classList.remove('blurred');
     setTimeout(() => {
-        notification.classList.remove('show');
-    }, 5000);
+        document.getElementById('overlayContainer').style.display = 'none';
+    }, 800);
 }

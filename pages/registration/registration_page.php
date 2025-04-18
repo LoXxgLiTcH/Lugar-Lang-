@@ -35,7 +35,7 @@
            mysqli_stmt_bind_param($stmt2, "i", $user_id);
 
            if(mysqli_stmt_execute($stmt2)){
-               echo "<script>alert('Your Files are Uploaded')</script>";
+               echo "<script>alert('Registered Successfully!')</script>";
                mysqli_stmt_close($stmt2);
                header("Location: ../account_setup/account_setup.php");
                exit;
@@ -64,29 +64,29 @@
         <h2>Create an account</h2>
         <p>Enter your details to sign up for Lugar Lang!</p>
         
-        <form method="POST" id="signupForm" action="registration-page.php" enctype="multipart/form-data">
+        <form method="POST" id="signupForm" action="registration_page.php" enctype="multipart/form-data">
             <div class="form-item">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" placeholder="John Doe">
-                <div class="error" id="fullNameError"></div>
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
+            <div class="error" id="fullNameError"></div>
             </div>
             
             <div class="form-item">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="john@example.com">
-                <div class="error" id="emailError"></div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+            <div class="error" id="emailError"></div>
             </div>
             
             <div class="form-item">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="At least 8 characters">
-                <div class="error" id="passwordError"></div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="At least 8 characters" required>
+            <div class="error" id="passwordError"></div>
             </div>
             
             <div class="form-item">
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password">
-                <div class="error" id="confirmPasswordError"></div>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required>
+            <div class="error" id="confirmPasswordError"></div>
             </div>
             
             <button type="submit" class="submit-button" id="submitButton" name="submitBtn">Sign Up</button>
