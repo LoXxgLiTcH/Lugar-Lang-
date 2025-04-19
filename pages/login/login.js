@@ -23,6 +23,6 @@ document.getElementById("loginForm").addEventListener("submit", function(event) 
     }
 
     if (isValid) {
-        this.submit(); // Submit the form if validation passes
+        this.submit(); 
     }
 });

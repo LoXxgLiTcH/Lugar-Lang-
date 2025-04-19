@@ -85,7 +85,7 @@
                        throw new Exception("Failed to register user");
                    }
                } catch (Exception $e) {
-                   // Rollback transaction on error
+                 
                    mysqli_rollback($conn);
                    $error_message = "Registration failed: " . $e->getMessage();
                }
