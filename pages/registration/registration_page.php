@@ -62,7 +62,7 @@
                $_SESSION["user_id"] = $user_id;
                mysqli_stmt_close($stmt);
                
-               // Insert into account_info table with default values explicitly set to 0/false
+    
                $stmt2 = mysqli_prepare($conn, "INSERT INTO account_info (user_id, has_default_destination, has_completed_setup) VALUES (?, 0, 0)");
                mysqli_stmt_bind_param($stmt2, "i", $user_id);
                
