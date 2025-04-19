@@ -1,5 +1,5 @@
 
-import { isEmailValid, isPasswordStrong, isNotEmpty } from './utils/validate.js';
+import { isEmailValid, isPasswordStrong, isNotEmpty } from '../../js/utils/validate.js';
 
 document.getElementById("signupForm").addEventListener("submit", function(event) {
     event.preventDefault();

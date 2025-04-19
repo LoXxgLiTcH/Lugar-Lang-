@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-// Database connection
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try {
     $conn = new mysqli("localhost", "root", "", "lugarlangdb");
@@ -11,20 +10,19 @@ try {
     exit;
 }
 
-// Check user session
 $user_id = $_SESSION["user_id"] ?? null;
 if (!$user_id) {
     header("Location: ../map/map.html");
     exit();
 }
 
-// Flag to determine if we should show the profile setup
+
 $showProfileSetup = false;
 $hasDefaultCampus = false;
 $defaultCampus = null;
 $hasCompletedSetup = false;
 
-// Check if user has completed profile setup and has a default campus
+
 $check_query = "SELECT has_default_destination, def_campus, has_completed_setup FROM account_info WHERE user_id = ?";
 $stmt = mysqli_prepare($conn, $check_query);
 mysqli_stmt_bind_param($stmt, "i", $user_id);
@@ -34,31 +32,29 @@ mysqli_stmt_store_result($stmt);
 if (mysqli_stmt_num_rows($stmt) > 0) {
     mysqli_stmt_bind_result($stmt, $has_default, $def_campus, $has_completed_setup);
     mysqli_stmt_fetch($stmt);
-    
+
     $hasDefaultCampus = ($has_default == 1);
     $defaultCampus = $def_campus;
     $hasCompletedSetup = ($has_completed_setup == 1);
-    
-    // If user hasn't completed setup, show profile setup
+
+
     if (!$hasCompletedSetup) {
         $showProfileSetup = true;
     }
-    
-    // If user has default destination and not changing it, redirect to home
+
+
     if ($hasDefaultCampus && !isset($_GET['change'])) {
-        $_SESSION['current_campus'] = $defaultCampus; // Set current campus in session
+        $_SESSION['current_campus'] = $defaultCampus;
         header("Location: ../splash/splash.html");
         exit();
     }
 }
 
-// Handle profile setup form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
     $name = $_POST["username"];
-    $role = $_POST["role"];
-    $photo = "default_profile.jpg"; // Default image in case upload fails
+    $year = $_POST["year"];
+    $photo = "../../public/images/default_profile.jpg";
 
-    // Check if photo was uploaded
     if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] === UPLOAD_ERR_OK) {
         $photo_tmp = $_FILES["photo"]["tmp_name"];
         $photo = $_FILES["photo"]["name"];
@@ -66,8 +62,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
         $allowed_types = ["jpg", "png", "jpeg", "gif"];
         $upload_dir = "../../profile_uploads/";
         $target_path = $upload_dir . $photo;
-        
-        // Check if directory exists and is writable
+
+
         if (!is_dir($upload_dir) || !is_writable($upload_dir)) {
             echo "<script>alert('Upload directory does not exist or is not writable. Please contact the administrator.')</script>";
         } else if (in_array(strtolower($ext), $allowed_types)) {
@@ -79,9 +75,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
         }
     }
 
-    // Update user profile
-    $stmt = $conn->prepare("UPDATE account_info SET photo = ?, username = ?, role = ?, has_completed_setup = 1 WHERE user_id = ?");
-    $stmt->bind_param("sssi", $photo, $name, $role, $user_id);
+
+    $stmt = $conn->prepare("UPDATE account_info SET photo = ?, username = ?, year = ?, has_completed_setup = 1 WHERE user_id = ?");
+    $stmt->bind_param("sssi", $photo, $name, $year, $user_id);
 
     if ($stmt->execute()) {
         $showProfileSetup = false;
@@ -106,6 +102,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Lugar Lang!</title>
+    <link rel="stylesheet" href="styles/setup_overlay.css">
+    <link rel="stylesheet" href="styles/choose_campus.css">
     <style>
         :root {
             --primary: #FF7F2A;
@@ -164,476 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
             z-index: -1;
         }
 
-        /* Campus Selection Page Styles */
-        .page-container {
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            border-top: 4px solid var(--accent-orange);
-            transition: filter 0.8s ease;
-        }
 
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-
-        .header h2 {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--primary-blue);
-            position: relative;
-            display: inline-block;
-        }
-
-        .header h2::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-orange), var(--accent-green));
-            border-radius: 3px;
-        }
-
-        .header p {
-            color: #666;
-            margin: 0 auto;
-            max-width: 90%;
-        }
-
-        .campus-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .campus-card {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background-color: white;
-            height: 100%;
-            border-left: 3px solid var(--accent-green);
-            position: relative;
-        }
-
-        .campus-card:nth-child(even) {
-            border-left: 3px solid var(--accent-orange);
-        }
-
-        .campus-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
-        }
-
-        .campus-image-container {
-            position: relative;
-            height: 180px;
-            overflow: hidden;
-        }
-
-        .campus-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: filter 0.3s ease;
-        }
-
-        .campus-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8), rgba(76, 175, 80, 0.6));
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .campus-image-container:hover .campus-image {
-            filter: blur(3px);
-        }
-
-        .campus-image-container:hover .campus-overlay {
-            opacity: 1;
-        }
-
-        .campus-details {
-            padding: 15px;
-            background: linear-gradient(to bottom, white, var(--light-green));
-        }
-
-        .campus-card:nth-child(even) .campus-details {
-            background: linear-gradient(to bottom, white, var(--light-orange));
-        }
-
-        .campus-name {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: var(--primary-blue);
-        }
-
-        .campus-location {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .campus-location::before {
-            content: '•';
-            color: var(--accent-orange);
-            margin-right: 5px;
-            font-size: 1.2rem;
-        }
-
-        .campus-card:nth-child(even) .campus-location::before {
-            color: var(--accent-green);
-        }
-
-        .campus-description {
-            color: #555;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .set-destination-btn {
-            background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-        }
-
-        .campus-card:nth-child(even) .set-destination-btn {
-            background: linear-gradient(90deg, var(--primary-blue), var(--accent-orange));
-        }
-
-        .set-destination-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .pin-destination {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            background-color: white;
-            border: 2px solid var(--accent-green);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-        }
-
-        .campus-card:nth-child(even) .pin-destination {
-            border-color: var(--accent-orange);
-        }
-
-        .pin-destination:hover {
-            transform: scale(1.1);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .pin-destination svg {
-            width: 18px;
-            height: 18px;
-            fill: var(--accent-green);
-            transition: fill 0.3s ease;
-        }
-
-        .campus-card:nth-child(even) .pin-destination svg {
-            fill: var(--accent-orange);
-        }
-
-        .pin-destination.active {
-            background-color: var(--accent-green);
-        }
-
-        .campus-card:nth-child(even) .pin-destination.active {
-            background-color: var(--accent-orange);
-        }
-
-        .pin-destination.active svg {
-            fill: white;
-        }
-
-        .pin-tooltip {
-            position: absolute;
-            bottom: 50px;
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        .pin-destination:hover .pin-tooltip {
-            opacity: 1;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            background-color: var(--accent-green);
-            color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateX(120%);
-            transition: transform 0.4s ease;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification-icon {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Profile Setup Overlay Styles */
-        .overlay-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            background-color: rgba(0, 0, 0, 0.4);
-            transition: opacity 0.8s ease;
-        }
-
-        .setup-container {
-            width: 100%;
-            max-width: 420px;
-            background-color: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 32px 24px;
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 0.5s ease-out;
-            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .setup-container.slide-down {
-            transform: translateY(150vh);
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background-color: var(--neutral-light);
-            margin-bottom: 24px;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 70%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 2px;
-        }
-
-        .setup-container h2 {
-            color: var(--neutral-dark);
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .setup-container p {
-            color: var(--neutral-medium);
-            font-size: 16px;
-            margin-bottom: 28px;
-        }
-
-        .form-item {
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        label {
-            display: block;
-            color: var(--neutral-dark);
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 6px;
-        }
-
-        input,
-        select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--neutral-light);
-            border-radius: var(--radius);
-            font-size: 16px;
-            color: var(--neutral-dark);
-            transition: var(--transition);
-            background-color: var(--white);
-        }
-
-        input:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--primary-light);
-        }
-
-        input::placeholder,
-        select::placeholder {
-            color: var(--neutral-medium);
-            opacity: 0.7;
-        }
-
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239e9e9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 16px;
-        }
-
-        .photo-upload {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .photo-preview {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: var(--neutral-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 2px solid var(--primary-light);
-        }
-
-        .photo-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .photo-placeholder {
-            color: var(--neutral-medium);
-            font-size: 24px;
-        }
-
-        .upload-btn {
-            padding: 10px 16px;
-            background-color: var(--primary-light);
-            color: var(--primary);
-            border: none;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .upload-btn:hover {
-            background-color: var(--primary);
-            color: var(--white);
-        }
-
-        .upload-btn:active {
-            transform: translateY(1px);
-        }
-
-        .submit-button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: var(--radius);
-            background-color: var(--primary);
-            color: var(--white);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: 10px;
-        }
-
-        .submit-button:hover {
-            background-color: #E86C1A;
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(255, 127, 42, 0.3);
-        }
-
-        .submit-button:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 8px rgba(255, 127, 42, 0.3);
-        }
-
-        .setup-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
-        }
-
-        /* Responsive adjustments */
         @media (min-width: 576px) {
             .page-container {
                 padding: 30px;
@@ -727,7 +256,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
             }
         }
 
-        /* Blurred state for when overlay is showing */
+
         .page-container.blurred {
             filter: blur(5px);
         }
@@ -818,9 +347,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
                 </div>
 
                 <div class="form-item">
-                    <label for="role">Year Level / Role</label>
-                    <select id="role" name="role" required>
-                        <option value="" disabled selected>Select your role</option>
+                    <label for="year">Year Level</label>
+                    <select id="year" name="year" required>
+                        <option value="" disabled selected>Select your year</option>
                         <option value="1st">1st Year Student</option>
                         <option value="2nd">2nd Year Student</option>
                         <option value="3rd">3rd Year Student</option>

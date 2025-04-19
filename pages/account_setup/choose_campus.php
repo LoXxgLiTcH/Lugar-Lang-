@@ -12,7 +12,7 @@ if (!$user_id) {
 if (isset($_POST['campus'])) {
     $campus = $_POST['campus'];
 
-    // Make sure campus is either 'talamban' or 'downtown'
+   
     if ($campus !== 'talamban' && $campus !== 'downtown') {
         echo json_encode(['success' => false, 'message' => 'Invalid campus selection']);
         exit;

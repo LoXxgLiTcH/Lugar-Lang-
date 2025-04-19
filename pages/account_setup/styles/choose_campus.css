@@ -1,0 +1,266 @@
+
+        /* Campus Selection Page Styles */
+        .page-container {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border-top: 4px solid var(--accent-orange);
+            transition: filter 0.8s ease;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-blue);
+            position: relative;
+            display: inline-block;
+        }
+
+        .header h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-green));
+            border-radius: 3px;
+        }
+
+        .header p {
+            color: #666;
+            margin: 0 auto;
+            max-width: 90%;
+        }
+
+        .campus-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .campus-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+            height: 100%;
+            border-left: 3px solid var(--accent-green);
+            position: relative;
+        }
+
+        .campus-card:nth-child(even) {
+            border-left: 3px solid var(--accent-orange);
+        }
+
+        .campus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .campus-image-container {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .campus-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: filter 0.3s ease;
+        }
+
+        .campus-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.8), rgba(76, 175, 80, 0.6));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .campus-image-container:hover .campus-image {
+            filter: blur(3px);
+        }
+
+        .campus-image-container:hover .campus-overlay {
+            opacity: 1;
+        }
+
+        .campus-details {
+            padding: 15px;
+            background: linear-gradient(to bottom, white, var(--light-green));
+        }
+
+        .campus-card:nth-child(even) .campus-details {
+            background: linear-gradient(to bottom, white, var(--light-orange));
+        }
+
+        .campus-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--primary-blue);
+        }
+
+        .campus-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .campus-location::before {
+            content: '•';
+            color: var(--accent-orange);
+            margin-right: 5px;
+            font-size: 1.2rem;
+        }
+
+        .campus-card:nth-child(even) .campus-location::before {
+            color: var(--accent-green);
+        }
+
+        .campus-description {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .set-destination-btn {
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .campus-card:nth-child(even) .set-destination-btn {
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-orange));
+        }
+
+        .set-destination-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .pin-destination {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: white;
+            border: 2px solid var(--accent-green);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .campus-card:nth-child(even) .pin-destination {
+            border-color: var(--accent-orange);
+        }
+
+        .pin-destination:hover {
+            transform: scale(1.1);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .pin-destination svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent-green);
+            transition: fill 0.3s ease;
+        }
+
+        .campus-card:nth-child(even) .pin-destination svg {
+            fill: var(--accent-orange);
+        }
+
+        .pin-destination.active {
+            background-color: var(--accent-green);
+        }
+
+        .campus-card:nth-child(even) .pin-destination.active {
+            background-color: var(--accent-orange);
+        }
+
+        .pin-destination.active svg {
+            fill: white;
+        }
+
+        .pin-tooltip {
+            position: absolute;
+            bottom: 50px;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .pin-destination:hover .pin-tooltip {
+            opacity: 1;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--accent-green);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        
