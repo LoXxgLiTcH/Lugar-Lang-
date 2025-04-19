@@ -1,28 +1,39 @@
+import { isNotEmpty, isEmailValid } from '../../js/utils/validate.js';
 
-import { isEmailValid, isNotEmpty } from '../../js/utils/validate.js';
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("loginForm");
 
-document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-    document.getElementById("emailError").textContent = "";
-    document.getElementById("passwordError").textContent = "";
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
 
-    let isValid = true;
+        const emailError = document.getElementById("emailError");
+        const passwordError = document.getElementById("passwordError");
 
-    if (!isEmailValid(email)) {
-        document.getElementById("emailError").textContent = "Please enter a valid email address.";
-        isValid = false;
-    }
+        
+        emailError.textContent = "";
+        passwordError.textContent = "";
+        // emailError.classList.remove("visible");
+        // passwordError.classList.remove("visible");
 
-    if (!isNotEmpty(password)) {
-        document.getElementById("passwordError").textContent = "Password cannot be empty.";
-        isValid = false;
-    }
+        let isValid = true;
 
-    if (isValid) {
-        this.submit(); 
-    }
+        if (!isNotEmpty(email) || !isEmailValid(email)) {
+            emailError.textContent = "Please enter a valid email address.";
+            emailError.classList.add("visible");
+            isValid = false;
+        }
+
+        if (!isNotEmpty(password)) {
+            passwordError.textContent = "Password is required.";
+            passwordError.classList.add("visible");
+            isValid = false;
+        }
+
+        if (isValid) {
+            form.submit(); 
+        }
+    });
 });

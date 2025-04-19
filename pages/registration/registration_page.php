@@ -33,6 +33,9 @@
        else if($pass !== $confPass) {
            $error_message = "Passwords do not match.";
        }
+       else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $pass)) {
+        $error_message = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+    }
        else {
            // Check if email already exists
            $check_email = mysqli_prepare($conn, "SELECT email FROM registration WHERE email = ?");
@@ -154,6 +157,5 @@
             <a href="../login/login_page.php" class="login-link">Log in</a>
         </div>
     </div>
-    <script src="register.js" ></script> 
 </body>
 </html>

@@ -15,7 +15,7 @@
         <form id="loginForm" method="POST">
             <div class="form-item">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                <input type="email" id="email" name="email" placeholder="juan@example.com" required>
                 <div class="error" id="emailError"></div>
             </div>
             
@@ -66,7 +66,13 @@
             header('Location: ../splash/splash.html');
             exit();
         } else {
-            echo '<div class="error">Invalid email or password.</div>';
+            echo '<script>
+            const formContainer = document.querySelector(".form-container");
+            const errorDiv = document.createElement("div");
+            errorDiv.className = "error";
+            errorDiv.textContent = "Invalid email or password.";
+            formContainer.insertBefore(errorDiv, formContainer.firstChild);
+            </script>';
         }
     }
     ?>
