@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         
         emailError.textContent = "";
         passwordError.textContent = "";
-        // emailError.classList.remove("visible");
-        // passwordError.classList.remove("visible");
+   
 
         let isValid = true;
 

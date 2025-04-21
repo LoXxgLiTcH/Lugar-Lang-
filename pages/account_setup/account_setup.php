@@ -240,21 +240,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
             }
         }
 
-        @media (min-width: 1024px) {
-            .setup-container {
-                max-width: 520px;
-            }
-        }
 
-        @media (min-width: 1200px) {
-            .page-container {
-                max-width: 1140px;
-            }
+        @media (max-width: 390px) {
+ 
+    .page-container {
+        padding: 20px;
+        max-width: 100%;
+    }
 
-            .campus-card {
-                height: 240px;
-            }
-        }
+    .campus-card {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .campus-image-container {
+        height: 150px;
+    }
+
+    .campus-details {
+        padding: 10px;
+    }
+
+    .setup-container {
+        padding: 20px;
+        max-width: 100%;
+    }
+
+    .setup-container h2 {
+        font-size: 24px;
+    }
+}
 
 
         .page-container.blurred {
