@@ -288,8 +288,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
         </svg>
         <span id="notification-message">Default Campus set successfully!</span>
     </div>
-    <script src="setup.js"></script>
-    <script src="choose_campus.js"></script>
+    <script src="js/setup.js"></script>
+    <script src="js/choose_campus.js"></script>
 </body>
 
 </html>
