@@ -1,40 +1,10 @@
-<?php
-session_start();
-
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-try {
-    $conn = new mysqli("localhost", "root", "", "lugarlangdb");
-    $conn->set_charset("utf8mb4");
-} catch (Exception $e) {
-    echo "<script>alert('Database connection failed. Please try again later.');</script>";
-    exit;
-}
-
-$user_id = $_SESSION["user_id"] ?? null;
-if (!$user_id) {
-    header("Location: ../login/login.php");
-    exit();
-}
-
-$defaultCampus = "";
-
-
-$stmt = $conn->prepare("SELECT def_campus FROM account_info WHERE user_id = ? AND has_default_destination = 1");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($def_campus);
-if ($stmt->fetch()) {
-    $defaultCampus = $def_campus;
-}
-$stmt->close();
-?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Lugar Lang | Maps</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Lugar Lang!</title>
+    <link rel="stylesheet" href="styles/map.css">
    
 </head>
 <body>
@@ -47,7 +17,7 @@ $stmt->close();
             <label for="to">To</label>
             <input type="text" name="to" id="to" value="<?= htmlspecialchars($defaultCampus) ?>" placeholder="Destination">
 
-            <button type="submit">Lugar Lang</button>
+            <button type="submit">Lugar Lang, kuya!</button>
         </form>
     </div>
 
