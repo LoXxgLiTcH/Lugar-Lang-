@@ -1,0 +1,77 @@
+:root {
+    --primary: #FF7F2A;
+    --primary-light: #FFD6BC;
+    --secondary: #2EA355;
+    --secondary-light: #C5EACD;
+    --neutral-dark: #333333;
+    --neutral-medium: #9E9E9E;
+    --neutral-light: #F4F4F4;
+    --white: #FFFFFF;
+    --error: #EF5350;
+    --shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    --radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom right, #C5EACD, #FFD6BC);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.map-container {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 500px;
+}
+
+h1 {
+    color: var(--secondary);
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--neutral-dark);
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--neutral-medium);
+    margin-bottom: 1.5rem;
+    transition: var(--transition);
+}
+
+input[type="text"]:focus {
+    border-color: var(--secondary);
+    outline: none;
+}
+
+button {
+    width: 100%;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+button:hover {
+    background: #e46f1f;
+}
