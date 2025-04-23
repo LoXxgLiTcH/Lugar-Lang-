@@ -23,39 +23,39 @@
       <img
         class="menu-bar"
         alt="Menu Bar"
-        src="../../public/assets/bars-solid.svg"
+        src="../../public/icons/bars-solid.svg"
       />
     </div>
     <div class="content w-full">
       <div class="ml-2 flex flex-col justfiy-center w-full">
         <div class="flex gap w-full">
-          <img class="icon" alt="Icon" src="../../public/assets/angle-right-solid.svg" />
+          <img class="icon" alt="Icon" src="../../public/icons/angle-right-solid.svg" />
           <p class="text border-green w-full">USC - DC</p>
         </div>
         <div>
           <img
             class="icon"
             alt="Icon"
-            src="../../public/assets/arrow-up-solid.svg"
+            src="../../public/icons/arrow-up-solid.svg"
           />
           <img
             class="icon"
             alt="Icon"
-            src="../../public/assets/arrow-down-solid.svg"
+            src="../../public/icons/arrow-down-solid.svg"
           />
         </div>
         <div class="flex gap w-full">
           <img
             class="icon"
             alt="Icon"
-            src="../../public/assets/location-arrow-solid.svg"
+            src="../../public/icons/location-arrow-solid.svg"
           />
           <p class="text border-green w-full">USC - DC</p>
         </div>
       </div>
       <h2 class="text-xl text-green">Available Jeeps</h2>
       <div class="flex gap">
-        <img class="icon" alt="Icon" src="../../public/assets/car-solid.svg" />
+        <img class="icon" alt="Icon" src="../../public/icons/car-solid.svg" />
         <p class="text border-green">13C</p>
       </div>
       <div class="ml-2 text-green text-xl">
@@ -72,7 +72,7 @@
       </div>
       <hr />
       <div class="flex gap">
-        <img class="icon" alt="Icon" src="../../public/assets/car-solid.svg" />
+        <img class="icon" alt="Icon" src="../../public/icons/car-solid.svg" />
         <p class="text border-green">04D</p>
       </div>
       <div class="ml-2 text-green text-xl">

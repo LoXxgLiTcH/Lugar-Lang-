@@ -105,25 +105,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
     <link rel="stylesheet" href="styles/setup_overlay.css">
     <link rel="stylesheet" href="styles/choose_campus.css">
     <style>
-        :root {
-            --primary: #FF7F2A;
-            --primary-light: #FFD6BC;
-            --secondary: #2EA355;
-            --secondary-light: #C5EACD;
-            --neutral-dark: #333333;
-            --neutral-medium: #9E9E9E;
-            --neutral-light: #F4F4F4;
-            --white: #FFFFFF;
-            --error: #EF5350;
-            --shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
-            --radius: 12px;
-            --transition: all 0.3s ease;
-            --primary-blue: #1e3a8a;
-            --accent-orange: #ff6b35;
-            --accent-green: #4caf50;
-            --light-green: rgba(76, 175, 80, 0.1);
-            --light-orange: rgba(255, 107, 53, 0.1);
-        }
+            :root {
+                --primary: #FF7F2A;
+                --primary-light: #FFD6BC;
+                --secondary: #2EA355;
+                --secondary-light: #C5EACD;
+                --neutral-dark: #333333;
+                --neutral-medium: #9E9E9E;
+                --neutral-light: #F4F4F4;
+                --white: #FFFFFF;
+                --error: #EF5350;
+                --shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+                --radius: 12px;
+                --transition: all 0.3s ease;
+                --primary-blue: #1e3a8a;
+                --accent-orange: #ff6b35;
+                --accent-green: #4caf50;
+                --light-green: rgba(76, 175, 80, 0.1);
+                --light-orange: rgba(255, 107, 53, 0.1);
+            }
 
         * {
             margin: 0;
