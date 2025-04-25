@@ -159,6 +159,18 @@ input::placeholder {
     background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
 }
 
+
+.error-alert {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+
 @media (min-width: 768px) {
     .form-container {
         padding: 40px 32px;
