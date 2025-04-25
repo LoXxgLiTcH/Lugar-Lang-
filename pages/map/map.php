@@ -37,3 +37,21 @@
     </script>
 </body>
 </html>
+
+
+<!-- For future implementation -->
+<!-- 
+if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            console.log("User's location:", lat, lng);
+            document.getElementById("from").value = `${lat}, ${lng}`;
+        },
+        (error) => {
+            console.warn("Location access denied or unavailable.");
+        }
+    );
+} else {
+    console.warn("Ge -->

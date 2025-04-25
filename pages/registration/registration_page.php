@@ -5,16 +5,15 @@
    $db_pass = "";
    $db_name = "lugarlangdb";
    
-   mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); // Enable better error reporting
-   
-   // Initialize variables to store form data and errors
+   mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); 
+
    $error_message = "";
    $name = "";
    $email = "";
    
    try {
        $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
-       $conn->set_charset("utf8mb4"); // Set charset for better security
+       $conn->set_charset("utf8mb4"); 
    } catch (Exception $e) {
        $error_message = "Database connection failed. Please try again later.";
    }
@@ -29,13 +28,17 @@
        if (empty($name) || empty($email) || empty($pass) || empty($confPass)) {
            $error_message = "All fields are required.";
        }
+       // Check if email ends with @usc.edu.ph
+       else if (!preg_match('/^[\w.%+-]+@usc\.edu\.ph$/i', $email)) {
+           $error_message = "Please use a valid USC email address (@usc.edu.ph).";
+       }
        // Check if passwords match
        else if($pass !== $confPass) {
            $error_message = "Passwords do not match.";
        }
        else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $pass)) {
-        $error_message = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
-    }
+           $error_message = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+       }
        else {
            // Check if email already exists
            $check_email = mysqli_prepare($conn, "SELECT email FROM registration WHERE email = ?");
@@ -50,14 +53,12 @@
            else {
                mysqli_stmt_close($check_email);
                
-               // Hash password
+        
                $passHash = password_hash($pass, PASSWORD_DEFAULT);
 
-               // Begin transaction to ensure data consistency
                mysqli_begin_transaction($conn);
                
                try {
-                   // Insert into registration table
                    $stmt = mysqli_prepare($conn, "INSERT INTO registration (name, email, password) VALUES (?, ?, ?)");
                    mysqli_stmt_bind_param($stmt, "sss", $name, $email, $passHash);
                    
@@ -73,7 +74,7 @@
                        if(mysqli_stmt_execute($stmt2)){
                            mysqli_stmt_close($stmt2);
                            
-                           // Commit the transaction
+                          
                            mysqli_commit($conn);
                            
                            echo "<script>
@@ -133,7 +134,7 @@
             
             <div class="form-item">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="john@example.com" value="<?php echo htmlspecialchars($email); ?>" required>
+            <input type="email" id="email" name="email" placeholder="youremail@usc.edu.ph" value="<?php echo htmlspecialchars($email); ?>" required>
             <div class="error" id="emailError"></div>
             </div>
             
@@ -157,5 +158,19 @@
             <a href="../login/login_page.php" class="login-link">Log in</a>
         </div>
     </div>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            const email = document.getElementById('email').value.trim();
+            const emailError = document.getElementById('emailError');
+            
+            if (!email.toLowerCase().endsWith('@usc.edu.ph')) {
+                emailError.textContent = 'Please use a valid USC email address (@usc.edu.ph)';
+                event.preventDefault();
+            } else {
+                emailError.textContent = '';
+            }
+        });
+    </script>
 </body>
 </html>
