@@ -270,10 +270,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
                     <label for="year">Year Level</label>
                     <select id="year" name="year" required>
                         <option value="" disabled selected>Select your year</option>
-                        <option value="1st">1st Year Student</option>
-                        <option value="2nd">2nd Year Student</option>
-                        <option value="3rd">3rd Year Student</option>
-                        <option value="4th">4th Year Student</option>
+                        <option value="1st">1st Year</option>
+                        <option value="2nd">2nd Year</option>
+                        <option value="3rd">3rd Year</option>
+                        <option value="4th">4th Year</option>
                     </select>
                 </div>
 
