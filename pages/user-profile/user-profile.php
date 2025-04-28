@@ -41,7 +41,7 @@ try {
       </div>
       <h1 class="profile-name"><?php echo htmlspecialchars($name ?? 'Username'); ?></h1>
       <p class="profile-email"><?php 
-        $email_query = "SELECT email FROM account_info WHERE user_id = ?";
+        $email_query = "SELECT email FROM registration WHERE user_id = ?";
         $stmt = mysqli_prepare($conn, $email_query);
         mysqli_stmt_bind_param($stmt, "i", $user_id);
         mysqli_stmt_execute($stmt);

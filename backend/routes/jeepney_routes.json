@@ -26,7 +26,7 @@
         {
           "name": "Talamban Elementary School",
           "type": "School"
-        },
+        },  
         {
           "name": "Gaisano Grand Mall",
           "type": "Mall / Grocery"
@@ -468,7 +468,8 @@
     "type": "School"
   },
   {
-    "name": "San Carlos Seminar Complex",
+    "name": "University of Cebu (Main)",
+    "campus": "Downtown Campus",
     "type": "School"
   },
   {
@@ -531,6 +532,1940 @@
     "terminal": true
   }
 ]
+
+    },
+    {
+      "id": "62C",
+      "name": "62C Route",
+      "from": "Pitos Terminal",
+      "to": "Carbon Public Market",
+      "landmarks": [
+        "Mall / Grocery",
+        "School",
+        "Terminal",
+        "USC Campus"
+      ],
+      "directional": false,
+      "waypoints": [
+        {
+          "name": "Pitos Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Bacayan",
+          "type": "Area"
+        },
+        {
+          "name": "Smeag",
+          "type": "School"
+        },
+        {
+          "name": "Sparta",
+          "type": "Landmark"
+        },
+        {
+          "name": "Pelish",
+          "type": "Landmark"
+        },
+        {
+          "name": "English School",
+          "type": "School"
+        },
+        {
+          "name": "Gaisano Grand Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Aicila Suites Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "University of San Carlos",
+          "campus": "Talamban",
+          "type": "USC Campus"
+        },
+        {
+          "name": "Banilad Town Center",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "University of Cebu Banilad Campus",
+          "type": "School"
+        },
+        {
+          "name": "Paradise Village Road",
+          "type": "Road"
+        },
+        {
+          "name": "Cebu Country Club",
+          "type": "Landmark"
+        },
+        {
+          "name": "Keppel Tower Cebu Business Park",
+          "type": "Building"
+        },
+        {
+          "name": "Ayala Center Cebu",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Hotel Elizabeth Cebu",
+          "type": "Hotel"
+        },
+        {
+          "name": "Asilo De La Milagrosa",
+          "type": "Church"
+        },
+        {
+          "name": "Colegio De La Immaculada Concepcion",
+          "type": "School"
+        },
+        {
+          "name": "Gen Echavez Street",
+          "type": "Road"
+        },
+        {
+          "name": "Allsons Inn",
+          "type": "Hotel"
+        },
+        {
+          "name": "Sikatuna Street",
+          "type": "Road"
+        },
+        {
+          "name": "Colon Obelisk",
+          "type": "Landmark"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "Carbon Public Market",
+          "type": "Mall / Grocery",
+          "terminal": true
+        }
+      ]
+    }
+    ,
+    {
+      "id": "12D",
+      "name": "12D Route",
+      "from": "Labangon",
+      "to": "Colon",
+      "landmarks": [
+        "Mall / Grocery",
+        "School",
+        "Terminal",
+        "Church",
+        "Hospital",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Labangon",
+          "type": "Area"
+        },
+        {
+          "name": "Punta Princesa",
+          "type": "Area"
+        },
+        {
+          "name": "F. Llamas Street",
+          "type": "Road"
+        },
+        {
+          "name": "Tisa",
+          "type": "Area"
+        },
+        {
+          "name": "Katipunan Street",
+          "type": "Road"
+        },
+        {
+          "name": "Tres de Abril Street",
+          "type": "Road"
+        },
+        {
+          "name": "N. Bacalso Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Citilink Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Cebu City Medical Center (CCMC)",
+          "type": "Hospital"
+        },
+        {
+          "name": "Cebu South Bus Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Elizabeth Mall (E. Mall)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Asian College of Technology (ACT)",
+          "type": "School"
+        },
+        {
+          "name": "University of San Carlos",
+          "campus": "Downtown Campus",
+          "type": "USC Campus"
+        },
+        {
+          "name": "Junquera Street",
+          "type": "Road"
+        },
+        {
+          "name": "Colon Street",
+          "type": "Road"
+        },
+        {
+          "name": "Gaisano Main Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "University of the Visayas (UV)",
+          "type": "School"
+        },
+        {
+          "name": "P. Burgos Street",
+          "type": "Road"
+        },
+        {
+          "name": "University of Southern Philippines Foundation (USPF)",
+          "type": "School"
+        },
+        {
+          "name": "Cebu Metropolitan Cathedral",
+          "type": "Church"
+        },
+        {
+          "name": "Legazpi Street",
+          "type": "Road"
+        },
+        {
+          "name": "Colonnade Supermarket",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Pelaez Street",
+          "type": "Road"
+        },
+        {
+          "name": "Sanciangko Street",
+          "type": "Road"
+        },
+        {
+          "name": "Sogo Hotel Cebu",
+          "type": "Hotel"
+        },
+        {
+          "name": "GV Tower Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "University of Cebu (UC)",
+          "type": "School"
+        },
+        {
+          "name": "Leon Kilat Street",
+          "type": "Road"
+        }
+      ]
+    },
+    {
+      "id": "01C",
+      "name": "01C Route",
+      "from": "V. Rama Avenue",
+      "to": "Pier 3",
+      "landmarks": [
+        "Mall / Grocery",
+        "School",
+        "Terminal",
+        "Pier",
+        "Church",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "V. Rama Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Sambag 1",
+          "type": "Area"
+        },
+        {
+          "name": "University of San Carlos",
+          "campus": "Downtown Campus",
+          "type": "USC Campus"
+        },
+        {
+          "name": "J. Alcantara Street",
+          "type": "Road"
+        },
+        {
+          "name": "Elizabeth Mall (E. Mall)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Leon Kilat Street",
+          "type": "Road"
+        },
+        {
+          "name": "Colon Street",
+          "type": "Road"
+        },
+        {
+          "name": "Metro Colon",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Colonnade Supermarket",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Gaisano Main Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "University of the Visayas (UV)",
+          "type": "School"
+        },
+        {
+          "name": "Colon Obelisk",
+          "type": "Landmark"
+        },
+        {
+          "name": "Mabini Street",
+          "type": "Road"
+        },
+        {
+          "name": "Zulueta Street",
+          "type": "Road"
+        },
+        {
+          "name": "M.J. Cuenco Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "T. Padilla Street",
+          "type": "Road"
+        },
+        {
+          "name": "B. Benedicto Street",
+          "type": "Road"
+        },
+        {
+          "name": "G. Maxilom Avenue Extension",
+          "type": "Road"
+        },
+        {
+          "name": "Pier 4",
+          "type": "Pier"
+        },
+        {
+          "name": "S. Osmeña Boulevard",
+          "type": "Road"
+        },
+        {
+          "name": "Pier 3",
+          "type": "Pier",
+          "terminal": true
+        },
+        {
+          "name": "V. Sotto Street",
+          "type": "Road"
+        },
+        {
+          "name": "Cebu Technological University (CTU)",
+          "type": "School"
+        },
+        {
+          "name": "V. Gullas Street",
+          "type": "Road"
+        },
+        {
+          "name": "D. Jakosalem Street",
+          "type": "Road"
+        },
+        {
+          "name": "Sanciangko Street",
+          "type": "Road"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "University of Cebu (UC)",
+          "type": "School"
+        }
+      ]
+    },
+    {
+      "id": "01B",
+      "name": "01B Route",
+      "from": "Sambag 1",
+      "to": "Pier 3 and Pier 2",
+      "landmarks": [
+        "School",
+        "Mall / Grocery",
+        "Terminal",
+        "Pier",
+        "Church",
+        "Historic Site",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Sambag 1",
+          "type": "Area"
+        },
+        {
+          "name": "University of San Carlos",
+          "campus": "Downtown Campus",
+          "type": "USC Campus"
+        },
+        {
+          "name": "Private",
+          "type": "Area"
+        },
+        {
+          "name": "J. Alcantara Street",
+          "type": "Road"
+        },
+        {
+          "name": "Asian College of Technology (ACT)",
+          "type": "School"
+        },
+        {
+          "name": "Elizabeth Mall (E. Mall)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Leon Kilat Street",
+          "type": "Road"
+        },
+        {
+          "name": "Gaisano Capital South",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Colon Street",
+          "type": "Road"
+        },
+        {
+          "name": "Metro Colon",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Colonnade Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "University of the Visayas (UV)",
+          "type": "School"
+        },
+        {
+          "name": "Gaisano Main",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Colon Obelisk",
+          "type": "Landmark"
+        },
+        {
+          "name": "Mabini Street",
+          "type": "Road"
+        },
+        {
+          "name": "Sandiego-Yap Ancestral House",
+          "type": "Historic Site"
+        },
+        {
+          "name": "Barangay Parian",
+          "type": "Area"
+        },
+        {
+          "name": "A. Bonifacio Street",
+          "type": "Road"
+        },
+        {
+          "name": "D. Jakosalem Street",
+          "type": "Road"
+        },
+        {
+          "name": "P. del Rosario Street",
+          "type": "Road"
+        },
+        {
+          "name": "T. Padilla Street",
+          "type": "Road"
+        },
+        {
+          "name": "Pier 4",
+          "type": "Pier"
+        },
+        {
+          "name": "Sergio Osmeña Boulevard",
+          "type": "Road"
+        },
+        {
+          "name": "V. Sotto Street",
+          "type": "Road"
+        },
+        {
+          "name": "Pier 3",
+          "type": "Pier"
+        },
+        {
+          "name": "Cebu-Mactan Ferry Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "C. Arellano Boulevard",
+          "type": "Road"
+        },
+        {
+          "name": "Pier 2",
+          "type": "Pier",
+          "terminal": true
+        }
+      ]
+    },
+    {
+      "id": "10F",
+      "name": "10F Route",
+      "from": "Bulacao",
+      "to": "Colon / Bulacao (loop)",
+      "landmarks": [
+        "Mall / Grocery",
+        "Terminal",
+        "School",
+        "Hospital",
+        "Road Intersection",
+        "USC Campus"
+      ],
+      "directional": false,
+      "waypoints": [
+        {
+          "name": "Bulacao",
+          "type": "Area"
+        },
+        {
+          "name": "Pardo",
+          "type": "Area"
+        },
+        {
+          "name": "Basak",
+          "type": "Area"
+        },
+        {
+          "name": "Mambaling",
+          "type": "Area"
+        },
+        {
+          "name": "Cebu Institute of Technology (CIT)",
+          "type": "School"
+        },
+        {
+          "name": "Southwestern University (SCSIT)",
+          "type": "School"
+        },
+        {
+          "name": "Corner V. Rama Avenue",
+          "type": "Road Intersection"
+        },
+        {
+          "name": "Citilink Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Cebu City Medical Center (CCMC)",
+          "type": "Hospital"
+        },
+        {
+          "name": "Cebu South Bus Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Elizabeth Mall (E. Mall)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "P. del Rosario Street",
+          "type": "Road"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "Junquera Street",
+          "type": "Road"
+        },
+        {
+          "name": "Colon Street",
+          "type": "Road"
+        },
+        {
+          "name": "Metro Gaisano (Colon)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Borromeo Street",
+          "type": "Road"
+        },
+        {
+          "name": "Sanciangko Street",
+          "type": "Road"
+        },
+        {
+          "name": "Panganiban Street",
+          "type": "Road"
+        },
+        {
+          "name": "CCMC",
+          "type": "Hospital"
+        },
+        {
+          "name": "N. Bacalso Avenue (Hi-way)",
+          "type": "Road"
+        },
+        {
+          "name": "CIT University",
+          "type": "School"
+        },
+        {
+          "name": "Mambaling",
+          "type": "Area"
+        },
+        {
+          "name": "Fooda (Basak)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Shopwise Basak",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Basak",
+          "type": "Area"
+        },
+        {
+          "name": "Pardo",
+          "type": "Area"
+        },
+        {
+          "name": "Bulacao",
+          "type": "Area",
+          "terminal": true
+        }
+      ]
+    },
+
+    {
+      "id": "10H",
+      "name": "10H Route",
+      "from": "Bulacao (Saint Paul College Foundation)",
+      "to": "SM City Cebu",
+      "landmarks": [
+        "School",
+        "Terminal",
+        "Mall / Grocery",
+        "Government Office",
+        "Church",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Bulacao (Saint Paul College Foundation)",
+          "type": "School"
+        },
+        {
+          "name": "Pardo",
+          "type": "Area"
+        },
+        {
+          "name": "Basak",
+          "type": "Area"
+        },
+        {
+          "name": "Mambaling",
+          "type": "Area"
+        },
+        {
+          "name": "Cebu Institute of Technology (CIT)",
+          "type": "School"
+        },
+        {
+          "name": "Southwestern University (SCSIT)",
+          "type": "School"
+        },
+        {
+          "name": "Citilink Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Cebu City Medical Center (CCMC)",
+          "type": "Hospital"
+        },
+        {
+          "name": "Cebu South Bus Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Elizabeth Mall (E. Mall)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Asian College of Technology (ACT)",
+          "type": "School"
+        },
+        {
+          "name": "P. del Rosario Street",
+          "type": "Road"
+        },
+        {
+          "name": "Sikatuna Street",
+          "type": "Road"
+        },
+        {
+          "name": "T. Padilla Street",
+          "type": "Road"
+        },
+        {
+          "name": "White Gold House",
+          "type": "Landmark"
+        },
+        {
+          "name": "White Gold Club",
+          "type": "Landmark"
+        },
+        {
+          "name": "SM City Cebu",
+          "type": "Mall / Grocery",
+          "terminal": true
+        },
+        {
+          "name": "Cebu City Registrar's Office",
+          "type": "Government Office"
+        },
+        {
+          "name": "DSWD",
+          "type": "Government Office"
+        },
+        {
+          "name": "Imus Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "M.J. Cuenco Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "NSO",
+          "type": "Government Office"
+        },
+        {
+          "name": "Legazpi Street",
+          "type": "Road"
+        },
+        {
+          "name": "Cebu Metropolitan Cathedral",
+          "type": "Church"
+        },
+        {
+          "name": "Manalili Street",
+          "type": "Road"
+        },
+        {
+          "name": "Borromeo Street",
+          "type": "Road"
+        },
+        {
+          "name": "Sanciangko Street",
+          "type": "Road"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "Aerol Pensione House",
+          "type": "Hotel"
+        },
+        {
+          "name": "N. Bacalso Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Napolcom",
+          "type": "Government Office"
+        },
+        {
+          "name": "Back to CIT",
+          "type": "School"
+        },
+        {
+          "name": "Back to Mambaling",
+          "type": "Area"
+        },
+        {
+          "name": "Shopwise Basak",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Return to Pardo",
+          "type": "Area"
+        },
+        {
+          "name": "Return to Bulacao",
+          "type": "Area"
+        }
+      ]
+    },
+
+    {
+      "id": "17C",
+      "name": "17C Route",
+      "from": "Apas",
+      "to": "Carbon Public Market",
+      "landmarks": [
+        "Mall / Grocery",
+        "School",
+        "Hospital",
+        "Church",
+        "Market",
+        "Government Office",
+        "Hotel",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Apas",
+          "type": "Area"
+        },
+        {
+          "name": "IT Park",
+          "type": "Business District"
+        },
+        {
+          "name": "Salinas Drive",
+          "type": "Road"
+        },
+        {
+          "name": "University of Southern Philippines Foundation (Lahug)",
+          "type": "School"
+        },
+        {
+          "name": "Jy Square Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Gorordo Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Lahug High School",
+          "type": "School"
+        },
+        {
+          "name": "University of the Philippines (Cebu)",
+          "type": "School"
+        },
+        {
+          "name": "Golden Peak Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "Philhealth Office",
+          "type": "Government Office"
+        },
+        {
+          "name": "Royal Concourse",
+          "type": "Restaurant / Landmark"
+        },
+        {
+          "name": "Asilo dela Milagrosa",
+          "type": "Church"
+        },
+        {
+          "name": "Gen. Maxilom Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Mango Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Fooda Saversmart Mango",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Horizons 101",
+          "type": "Condominium"
+        },
+        {
+          "name": "Mango Square",
+          "type": "Mall / Landmark"
+        },
+        {
+          "name": "The Beat",
+          "type": "Landmark"
+        },
+        {
+          "name": "Robinsons Fuente",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "F. Ramos Street",
+          "type": "Road"
+        },
+        {
+          "name": "Junquera Street",
+          "type": "Road"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "Sanciangko Street",
+          "type": "Road"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "type": "School"
+        },
+        {
+          "name": "GV Tower Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "Elizabeth Mall (E. Mall)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Panganiban Street",
+          "type": "Road"
+        },
+        {
+          "name": "Magallanes Street",
+          "type": "Road"
+        },
+        {
+          "name": "University of San Jose-Recoletos",
+          "type": "School"
+        },
+        {
+          "name": "Carbon Public Market",
+          "type": "Market",
+          "terminal": true
+        }
+      ],
+      "return_waypoints": [
+        {
+          "name": "Carbon Public Market",
+          "type": "Market"
+        },
+        {
+          "name": "MC Briones Street",
+          "type": "Road"
+        },
+        {
+          "name": "Cebu City Hall",
+          "type": "Government Office"
+        },
+        {
+          "name": "Basilica del Sto. Niño",
+          "type": "Church"
+        },
+        {
+          "name": "La Nueva Supermarket",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Lapulapu Street",
+          "type": "Road"
+        },
+        {
+          "name": "MCWD",
+          "type": "Government Office"
+        },
+        {
+          "name": "Legaspi Street",
+          "type": "Road"
+        },
+        {
+          "name": "Cebu Metropolitan Cathedral",
+          "type": "Church"
+        },
+        {
+          "name": "D. Jakosalem Street",
+          "type": "Road"
+        },
+        {
+          "name": "Gaisano Main",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "University of the Visayas",
+          "type": "School"
+        },
+        {
+          "name": "Cogon Ramos",
+          "type": "Area"
+        },
+        {
+          "name": "Ramos Public Market",
+          "type": "Market"
+        },
+        {
+          "name": "F. Ramos Street",
+          "type": "Road"
+        },
+        {
+          "name": "Robinsons Fuente",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Mango Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Raintree Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Mango Square",
+          "type": "Mall / Landmark"
+        },
+        {
+          "name": "Horizons 101",
+          "type": "Condominium"
+        },
+        {
+          "name": "Fooda Saversmart",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Gen Maxilom Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Gorordo Avenue",
+          "type": "Road"
+        },
+        {
+          "name": "Royal Concourse",
+          "type": "Restaurant / Landmark"
+        },
+        {
+          "name": "Philhealth Office",
+          "type": "Government Office"
+        },
+        {
+          "name": "Golden Peak Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "Tonros Apartelle",
+          "type": "Hotel"
+        },
+        {
+          "name": "Harolds Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "University of the Philippines Cebu",
+          "type": "School"
+        },
+        {
+          "name": "Lahug",
+          "type": "Area"
+        },
+        {
+          "name": "Jy Square Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Salinas Drive",
+          "type": "Road"
+        },
+        {
+          "name": "W. Geonzon Street",
+          "type": "Road"
+        },
+        {
+          "name": "Cebu IT Park",
+          "type": "Business District"
+        },
+        {
+          "name": "Apas",
+          "type": "Area",
+          "terminal": true
+        }
+      ]
+    },
+    {
+      "id": "12i",
+      "name": "12i Route",
+      "from": "SM City Cebu",
+      "to": "Labangon (Tres de Abril St.)",
+      "landmarks": [
+        "Pier",
+        "Landmark",
+        "Fort",
+        "Road",
+        "Church",
+        "Hospital",
+        "Area",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "SM City Cebu",
+          "type": "Mall"
+        },
+        {
+          "name": "Pier 4",
+          "type": "Pier"
+        },
+        {
+          "name": "Pier 3",
+          "type": "Pier"
+        },
+        {
+          "name": "Plaza Independencia",
+          "type": "Landmark"
+        },
+        {
+          "name": "Fort San Pedro",
+          "type": "Fort"
+        },
+        {
+          "name": "Legaspi St.",
+          "type": "Road"
+        },
+        {
+          "name": "Cebu Metropolitan Cathedral",
+          "type": "Church"
+        },
+        {
+          "name": "Sto. Niño",
+          "type": "Church"
+        },
+        {
+          "name": "Manalilii St.",
+          "type": "Road"
+        },
+        {
+          "name": "CCMC",
+          "type": "Hospital"
+        },
+        {
+          "name": "N. Bacalso Hiway",
+          "type": "Road"
+        },
+        {
+          "name": "Punta Princesa",
+          "type": "Area"
+        },
+        {
+          "name": "Labangon (Tres de Abril St.)",
+          "type": "Area",
+          "terminal": true
+        }
+      ],
+      "return_waypoints": [
+        {
+          "name": "Labangon (Tres de Abril St.)",
+          "type": "Area"
+        },
+        {
+          "name": "Punta Princesa",
+          "type": "Area"
+        },
+        {
+          "name": "N. Bacalso Hiway",
+          "type": "Road"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "CCMC",
+          "type": "Hospital"
+        },
+        {
+          "name": "Manalilii St.",
+          "type": "Road"
+        },
+        {
+          "name": "Sto. Niño",
+          "type": "Church"
+        },
+        {
+          "name": "Cebu Metropolitan Cathedral",
+          "type": "Church"
+        },
+        {
+          "name": "Legaspi St.",
+          "type": "Road"
+        },
+        {
+          "name": "Fort San Pedro",
+          "type": "Fort"
+        },
+        {
+          "name": "Plaza Independencia",
+          "type": "Landmark"
+        },
+        {
+          "name": "Pier 3",
+          "type": "Pier"
+        },
+        {
+          "name": "Pier 4",
+          "type": "Pier"
+        },
+        {
+          "name": "Pier 5",
+          "type": "Pier"
+        },
+        {
+          "name": "SM City Cebu",
+          "type": "Mall",
+          "terminal": true
+        }
+      ]
+    },
+    {
+      "id": "09f",
+      "name": "09f Route",
+      "from": "Basak-Ibabao",
+      "to": "Colon",
+      "landmarks": [
+        "Government Office",
+        "Road",
+        "Church",
+        "Area",
+        "USC Campus",
+        "Mall",
+        "University",
+        "Terminal"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Basak-Ibabao",
+          "type": "Area"
+        },
+        {
+          "name": "Mambaling",
+          "type": "Area"
+        },
+        {
+          "name": "CIT",
+          "type": "University"
+        },
+        {
+          "name": "South Bus Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "E-Mall",
+          "type": "Mall"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "Colon",
+          "type": "Road"
+        },
+        {
+          "name": "UV",
+          "type": "University"
+        },
+        {
+          "name": "Zulueta St.",
+          "type": "Road"
+        },
+        {
+          "name": "Metropolitan Cathedral",
+          "type": "Church"
+        },
+        {
+          "name": "Cebu City Hall",
+          "type": "Government Office"
+        }
+      ],
+      "return_waypoints": [
+        {
+          "name": "Colon",
+          "type": "Road"
+        },
+        {
+          "name": "Zulueta St.",
+          "type": "Road"
+        },
+        {
+          "name": "Metropolitan Cathedral",
+          "type": "Church"
+        },
+        {
+          "name": "UV",
+          "type": "University"
+        },
+        {
+          "name": "University of San Carlos",
+          "campus": "Downtown Campus",
+          "type": "USC Campus"
+        },
+        {
+          "name": "E-Mall",
+          "type": "Mall"
+        },
+        {
+          "name": "Mambaling",
+          "type": "Area"
+        },
+        {
+          "name": "Basak-Ibabao",
+          "type": "Area",
+          "terminal": true
+        }
+      ]
+    },
+    {
+      "id": "09C",
+      "name": "09C Route",
+      "from": "Area A",
+      "to": "Area B",
+      "landmarks": [
+        "School",
+        "Mall / Grocery",
+        "Terminal",
+        "Church",
+        "Hospital",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Area A",
+          "type": "Area"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "Area B",
+          "type": "Area"
+        },
+        {
+          "name": "Street 1",
+          "type": "Road"
+        },
+        {
+          "name": "Street 2",
+          "type": "Road"
+        },
+        {
+          "name": "Mall X",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "University of San Carlos (South Campus)",
+          "campus": "South Campus",
+          "type": "School"
+        },
+        {
+          "name": "Church Y",
+          "type": "Church"
+        },
+        {
+          "name": "Hospital Z",
+          "type": "Hospital"
+        },
+        {
+          "name": "Terminal 1",
+          "type": "Terminal"
+        }
+      ]
+    },
+    
+    {
+      "id": "02B",
+      "name": "02B Route",
+      "from": "South Terminal",
+      "to": "Colon",
+      "landmarks": [
+        "School",
+        "Mall / Grocery",
+        "Terminal",
+        "Pier",
+        "Hospital",
+        "Church",
+        "Historic Site",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "South Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "University of San Carlos",
+          "campus": "Downtown Campus",
+          "type": "USC Campus"
+        },
+        {
+          "name": "South Terminal to Colon",
+          "type": "Route"
+        },
+        {
+          "name": "South Terminal to Plaza Independencia",
+          "type": "Route"
+        },
+        {
+          "name": "South Bus Terminal to Pier 1",
+          "type": "Route"
+        },
+        {
+          "name": "South Bus Terminal to Pier 2",
+          "type": "Route"
+        },
+        {
+          "name": "South Bus Terminal to Pier 3",
+          "type": "Route"
+        },
+        {
+          "name": "South Bus Terminal to Ferry Boat Terminal",
+          "type": "Route"
+        },
+        {
+          "name": "South Bus Terminal to Pier 4",
+          "type": "Route"
+        },
+        {
+          "name": "South Bus Terminal to Pier 5",
+          "type": "Route"
+        },
+        {
+          "name": "Colon to Plaza Independencia",
+          "type": "Route"
+        },
+        {
+          "name": "Colon to Fort San Pedro",
+          "type": "Route"
+        },
+        {
+          "name": "Colon to Pier 1",
+          "type": "Route"
+        },
+        {
+          "name": "Colon to Pier 2",
+          "type": "Route"
+        },
+        {
+          "name": "Colon to Pier 3",
+          "type": "Route"
+        },
+        {
+          "name": "Colon to Pier 4",
+          "type": "Route"
+        },
+        {
+          "name": "Colon to Ferry Boat Terminal",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 1 to Cebu South Bus Terminal",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 3 to Pier 5",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 3 to City Health",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 3 to Martires",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 3 to Sancianko St.",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 3 to E Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Pier 3 to CCMC",
+          "type": "Hospital"
+        },
+        {
+          "name": "Pier 3 to Cebu South Bus Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Pier 1 to E Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Pier 1 to Sancianko St.",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 1 to CCMC",
+          "type": "Hospital"
+        },
+        {
+          "name": "Pier 1 to South Bus Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Pier 4 to Martires",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 4 to Sancianko St.",
+          "type": "Route"
+        },
+        {
+          "name": "Pier 4 to E Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Pier 4 to CCMC",
+          "type": "Hospital"
+        },
+        {
+          "name": "Pier 4 to South Bus Terminal",
+          "type": "Terminal"
+        }
+      ]
+    },
+    {
+      "id": "04C",
+      "name": "04C Route",
+      "from": "South Bus Terminal",
+      "to": "University of San Carlos (Main Campus)",
+      "landmarks": [
+        "USC Campus",
+        "Mall / Grocery",
+        "Terminal",
+        "School",
+        "Hospital",
+        "Church"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "South Bus Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Cebu South Bus Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "University of San  (South Campus)",
+          "campus": "South Campus",
+          "type": "School"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "Sancianko Street",
+          "type": "Road"
+        },
+        {
+          "name": "Elizabeth Mall (E. Mall)",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Cebu City Medical Center (CCMC)",
+          "type": "Hospital"
+        },
+        {
+          "name": "Plaza Independencia",
+          "type": "Historic Site"
+        },
+        {
+          "name": "Cebu Metropolitan Cathedral",
+          "type": "Church"
+        }
+      ]
+    },
+
+    {
+      "id": "04L",
+      "name": "04L Route",
+      "from": "Lahug",
+      "to": "SM City Cebu",
+      "landmarks": [
+        "Mall / Grocery",
+        "Hotel",
+        "Terminal",
+        "Hospital",
+        "School",
+        "Church",
+        "Business Park",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Lahug",
+          "type": "Area"
+        },
+        {
+          "name": "Philhealth",
+          "type": "Government Office"
+        },
+        {
+          "name": "Golden Peak Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "Harolds Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "Cebu Parklane Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "Cebu Business Park",
+          "type": "Business Park"
+        },
+        {
+          "name": "Ayala Center Cebu",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Mabolo",
+          "type": "Area"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "SM City Cebu",
+          "type": "Mall / Grocery",
+          "terminal": true
+        },
+        {
+          "name": "Pag-ibig Fund",
+          "type": "Government Office"
+        },
+        {
+          "name": "University of the Philippines (Cebu)",
+          "type": "School"
+        },
+        {
+          "name": "JY Square Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Cebu IT Park",
+          "type": "Business Park"
+        },
+        {
+          "name": "Waterfront Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "Tesda",
+          "type": "Government Office"
+        },
+        {
+          "name": "Andoks Mabolo",
+          "type": "Restaurant"
+        },
+        {
+          "name": "Carmelite Monastery",
+          "type": "Church"
+        },
+        {
+          "name": "Mormons Church",
+          "type": "Church"
+        },
+        {
+          "name": "St. Joseph Parish (Mabolo Church)",
+          "type": "Church"
+        },
+        {
+          "name": "Cebu Daily News",
+          "type": "Media"
+        }
+      ]
+    },
+    {
+      "id": "14D",
+      "name": "14D Route",
+      "from": "Ayala",
+      "to": "Colon",
+      "landmarks": [
+        "Mall / Grocery",
+        "Hotel",
+        "Hospital",
+        "Government Office",
+        "Church",
+        "University",
+        "Restaurant",
+        "Business Park",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Ayala",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Escario St.",
+          "type": "Street"
+        },
+        {
+          "name": "Provincial Capitol",
+          "type": "Government Office"
+        },
+        {
+          "name": "Osmena Blvd.",
+          "type": "Street"
+        },
+        {
+          "name": "Cebu Doctors Hospital",
+          "type": "Hospital"
+        },
+        {
+          "name": "Fuente Osmena",
+          "type": "Landmark"
+        },
+        {
+          "name": "Robinsons Fuente",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "F. Ramos St.",
+          "type": "Street"
+        },
+        {
+          "name": "Cogon Ramos",
+          "type": "Street"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "Junquera St.",
+          "type": "Street"
+        },
+        {
+          "name": "Colon St.",
+          "type": "Street"
+        },
+        {
+          "name": "Gaisano Main",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "University of the Visayas",
+          "type": "University"
+        },
+        {
+          "name": "Shamrock",
+          "type": "Restaurant"
+        },
+        {
+          "name": "Manalili St.",
+          "type": "Street"
+        },
+        {
+          "name": "Metro Colon",
+          "type": "Area"
+        },
+        {
+          "name": "Cebu Normal University",
+          "type": "University"
+        },
+        {
+          "name": "Abellana Sports Center",
+          "type": "Sports Center"
+        },
+        {
+          "name": "Crown Regency Hotel",
+          "type": "Hotel"
+        },
+        {
+          "name": "Philhealth",
+          "type": "Government Office"
+        },
+        {
+          "name": "Ayala Terminal",
+          "type": "Terminal"
+        },
+        {
+          "name": "Jones Ave.",
+          "type": "Street"
+        }
+      ]
+    },
+
+    {
+      "id": "17C",
+      "name": "17C Route",
+      "from": "Apas",
+      "to": "Carbon",
+      "landmarks": [
+        "Mall / Grocery",
+        "Hotel",
+        "Hospital",
+        "Government Office",
+        "Street",
+        "University",
+        "Restaurant",
+        "Business Park",
+        "USC Campus"
+      ],
+      "directional": true,
+      "waypoints": [
+        {
+          "name": "Apas",
+          "type": "Area"
+        },
+        {
+          "name": "IT Park",
+          "type": "Business Park"
+        },
+        {
+          "name": "JY",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Lahug",
+          "type": "Area"
+        },
+        {
+          "name": "Capitol",
+          "type": "Government Office"
+        },
+        {
+          "name": "Cebu Doc Hospital",
+          "type": "Hospital"
+        },
+        {
+          "name": "Jones Ave.",
+          "type": "Street"
+        },
+        {
+          "name": "Fuente",
+          "type": "Landmark"
+        },
+        {
+          "name": "Robinsons Fuente",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Abellana",
+          "type": "Sports Center"
+        },
+        {
+          "name": "Sanciangko",
+          "type": "Street"
+        },
+        {
+          "name": "University of Cebu (Main)",
+          "campus": "Downtown Campus",
+          "type": "School"
+        },
+        {
+          "name": "UC",
+          "type": "University"
+        },
+        {
+          "name": "E Mall",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Taboan",
+          "type": "Area"
+        },
+        {
+          "name": "Pasil",
+          "type": "Area"
+        },
+        {
+          "name": "Carbon",
+          "type": "Area"
+        },
+        {
+          "name": "Colonnade",
+          "type": "Mall / Grocery"
+        },
+        {
+          "name": "Cebu Normal University",
+          "type": "University"
+        },
+        {
+          "name": "Philhealth",
+          "type": "Government Office"
+        },
+        {
+          "name": "Mormons",
+          "type": "Church"
+        },
+        {
+          "name": "Salinas",
+          "type": "Street"
+        },
+        {
+          "name": "UP Lahug",
+          "type": "University"
+        },
+        {
+          "name": "USPF",
+          "type": "University"
+        }
+      ]
 
     }
   ]
