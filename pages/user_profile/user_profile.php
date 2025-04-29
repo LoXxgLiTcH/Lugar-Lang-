@@ -10,7 +10,7 @@ try {
   exit;
 }
 
-// Initialize variables to prevent undefined warnings
+
 $username = $year = $photo = $default_campus = $name = $email = '';
 
 $user_id = isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
@@ -128,7 +128,7 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       margin-top: 3.5rem;
-      /* Account for fixed header */
+
       transition: var(--transition);
     }
 
@@ -142,9 +142,9 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       display: inline-block;
       margin-bottom: 0.5rem;
       width: 100px;
-      /* Ensure consistent width */
+
       height: 100px;
-      /* Ensure consistent height */
+
     }
 
     .profile-photo {
@@ -294,20 +294,21 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       color: var(--white);
     }
 
-   .modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(30, 58, 138, 0.6);
-  display: flex;
-  align-content: space-around;
-  z-index: 100;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  height: 100vh; /* Ensure full viewport height */
-}
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(30, 58, 138, 0.6);
+      display: flex;
+      align-content: space-around;
+      z-index: 100;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      height: 100vh;
+    }
+
     .modal-content {
       background: var(--white);
       padding: 1.8rem 1.5rem;
@@ -418,7 +419,7 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
   <div class="container">
     <div class="profile-section">
       <div class="profile-photo-container">
-        <img class="profile-photo" id="profilePhoto" alt="Profile Photo" src="<?php echo htmlspecialchars($photo ?? 'default.jpg'); ?>" />
+        <img class="profile-photo" id="profilePhoto" alt="Profile Photo" src="<?php echo htmlspecialchars($photo ?? '../../public/images/default_profile.jpg'); ?>" />
         <input type="file" id="photoInput" name="profile_photo" accept="image/*" style="display: none;" />
         <label for="photoInput" class="edit-photo">Change</label>
       </div>
