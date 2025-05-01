@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!preg_match('/^[\w.%+-]+@usc\.edu\.ph$/i', $email)) {
         $error_message = "Please use a valid USC email address (@usc.edu.ph).";
     } else {
-        $stmt = mysqli_prepare($conn, "SELECT id, password FROM registration WHERE email = ?");
+        $stmt = mysqli_prepare($conn, "SELECT user_id, password FROM registration WHERE email = ?");
         mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_bind_result($stmt, $user_id, $hashed_password);

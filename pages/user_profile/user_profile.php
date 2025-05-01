@@ -10,7 +10,6 @@ try {
   exit;
 }
 
-
 $username = $year = $photo = $default_campus = $name = $email = '';
 
 $user_id = isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
@@ -23,7 +22,7 @@ if ($user_id) {
   if ($row = $result1->fetch_assoc()) {
     $username = $row['username'];
     $year = $row['year'];
-    $photo = $row['photo'];
+    $photo = $row['photo'] ? '../../profile_uploads/' . $row['photo'] : '../../public/images/default_profile.jpg';
     $default_campus = $row['def_campus'];
   }
   $stmt1->close();
@@ -40,9 +39,33 @@ if ($user_id) {
 }
 
 $show_modal = false;
+$error_message = '';
+
 if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
   $show_modal = true;
   unset($_SESSION['update_success']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $new_password = $_POST['password'] ?? null;
+  $confirm_password = $_POST['confirm_password'] ?? null;
+
+  if ($new_password && !empty($new_password)) {
+    if ($new_password !== $confirm_password) {
+      $error_message = "Passwords do not match.";
+    } else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $new_password)) {
+      $error_message = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+    } else {
+      $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+      $stmt3 = $conn->prepare("UPDATE registration SET password = ? WHERE user_id = ?");
+      $stmt3->bind_param("si", $hashed_password, $user_id);
+      $stmt3->execute();
+      $stmt3->close();
+      $_SESSION['update_success'] = true;
+      header("Location: user_profile.php");
+      exit;
+    }
+  }
 }
 ?>
 
@@ -427,7 +450,7 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       <p class="profile-email"><?php echo htmlspecialchars($name) . " (" . htmlspecialchars($email) . ")"; ?></p>
     </div>
 
-    <form id="profileForm" method="POST" action="update_profile.php" enctype="multipart/form-data">
+    <form id="profileForm" method="POST" action="user_profile.php" enctype="multipart/form-data">
       <div class="info-card">
         <div class="card-header">
           <h2 class="card-title">Personal Information</h2>
@@ -456,6 +479,11 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
           </select>
         </div>
 
+        <div class="info-row" id="passwordRow" style="display: none;">
+          <label for="password">New Password:</label>
+          <input type="password" id="password" name="password">
+        </div>
+
         <div class="form-actions">
           <button type="submit" class="btn btn-primary" id="saveBtn" style="display: none;">Save Changes</button>
           <button type="button" class="btn btn-cancel" id="cancelBtn" style="display: none;">Cancel</button>
@@ -463,7 +491,6 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       </div>
     </form>
 
-    <!-- Modal -->
     <div id="confirmModal" class="modal" style="display:none;">
       <div class="modal-content">
         <p>Changes saved successfully!</p>
@@ -479,11 +506,13 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
     const inputs = document.querySelectorAll('#profileForm input, #profileForm select');
     const modal = document.getElementById('confirmModal');
     const closeModal = document.getElementById('closeModal');
+    const passwordRow = document.getElementById('passwordRow');
 
     editBtn.addEventListener('click', () => {
       inputs.forEach(input => input.removeAttribute('readonly'));
       document.getElementById('default_campus').disabled = false;
       document.getElementById('year').disabled = false;
+      passwordRow.style.display = 'block';
       saveBtn.style.display = 'inline-block';
       cancelBtn.style.display = 'inline-block';
       editBtn.style.display = 'none';
