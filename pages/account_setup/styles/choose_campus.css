@@ -300,6 +300,11 @@
                 max-width: 960px;
             }
 
+            .header {
+                text-align: center;
+                margin-bottom:40px;
+            }
+
             .campus-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 30px;
@@ -307,7 +312,7 @@
 
             .campus-card {
                 flex-direction: row;
-                height: 220px;
+                height: 320px;
             }
 
             .campus-image-container {

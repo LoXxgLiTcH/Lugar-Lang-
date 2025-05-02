@@ -164,15 +164,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
 
 
     @media (min-width: 576px) {
-      .page-container {
-        padding: 30px;
-        max-width: 540px;
-      }
+            .page-container {
+                padding: 65px;
+                max-width: 960px;
+            }
 
-      .header p {
-        max-width: 80%;
-      }
-    }
+            .header p {
+                max-width: 80%;
+            }
+        }
 
     .page-container.blurred {
       filter: blur(5px);
