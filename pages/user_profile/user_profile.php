@@ -57,10 +57,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $error_message = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
     } else {
       $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-      $stmt3 = $conn->prepare("UPDATE registration SET password = ? WHERE user_id = ?");
-      $stmt3->bind_param("si", $hashed_password, $user_id);
+      $stmt3 = $conn->prepare("SELECT COUNT(*) FROM registration WHERE user_id = ?");
+      $stmt3->bind_param("i", $user_id);
       $stmt3->execute();
+      $stmt3->bind_result($count);
+      $stmt3->fetch();
       $stmt3->close();
+
+      if ($count > 0) {
+        $stmt4 = $conn->prepare("UPDATE registration SET password = ? WHERE user_id = ?");
+        $stmt4->bind_param("si", $hashed_password, $user_id);
+        $stmt4->execute();
+        $stmt4->close();
+        $_SESSION['update_success'] = true;
+        header("Location: user_profile.php");
+        exit;
+      } else {
+        $error_message = "User ID not found. Password update failed.";
+      }
       $_SESSION['update_success'] = true;
       header("Location: user_profile.php");
       exit;
