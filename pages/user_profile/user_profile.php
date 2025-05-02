@@ -11,78 +11,178 @@ try {
 }
 
 $username = $year = $photo = $default_campus = $name = $email = '';
+$show_modal = false;
+$password_message = '';
+$password_status = '';
 
 $user_id = isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
 
-if ($user_id) {
-  $stmt1 = $conn->prepare("SELECT username, year, photo, def_campus FROM account_info WHERE user_id = ?");
-  $stmt1->bind_param("i", $user_id);
-  $stmt1->execute();
-  $result1 = $stmt1->get_result();
-  if ($row = $result1->fetch_assoc()) {
-    $username = $row['username'];
-    $year = $row['year'];
-    $photo = $row['photo'] ? '../../profile_uploads/' . $row['photo'] : '../../public/images/default_profile.jpg';
-    $default_campus = $row['def_campus'];
+// Process profile update form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_profile' && $user_id) {
+  try {
+    // Get form data
+    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
+    $year = isset($_POST['year']) ? trim($_POST['year']) : '';
+    $default_campus = isset($_POST['default_campus']) ? trim($_POST['default_campus']) : '';
+    
+    // Validate data
+    if (empty($username)) {
+      throw new Exception("Username cannot be empty");
+    }
+    
+    // Check if year is valid
+    $valid_years = ['1st', '2nd', '3rd', '4th'];
+    if (!in_array($year, $valid_years)) {
+      throw new Exception("Invalid year selected");
+    }
+    
+    // Check if campus is valid
+    $valid_campuses = ['talamban', 'downtown'];
+    if (!in_array($default_campus, $valid_campuses)) {
+      throw new Exception("Invalid campus selected");
+    }
+    
+    // Handle photo upload if provided
+    if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === 0) {
+      $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+      $file_type = $_FILES['profile_photo']['type'];
+      
+      if (!in_array($file_type, $allowed_types)) {
+        throw new Exception("Only JPG, PNG, and GIF files are allowed");
+      }
+      
+      $upload_dir = 'uploads/profile_photos/';
+      if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0755, true);
+      }
+      
+      $file_name = $user_id . '_' . time() . '_' . basename($_FILES['profile_photo']['name']);
+      $target_file = $upload_dir . $file_name;
+      
+      if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $target_file)) {
+        $photo = $target_file;
+      } else {
+        throw new Exception("Failed to upload profile photo");
+      }
+    }
+    
+    // Update database
+    $update_stmt = $conn->prepare("UPDATE account_info SET username = ?, year = ?, def_campus = ?" . 
+                                  ($photo ? ", photo = ?" : "") . 
+                                  " WHERE user_id = ?");
+    
+    if ($photo) {
+      $update_stmt->bind_param("ssssi", $username, $year, $default_campus, $photo, $user_id);
+    } else {
+      $update_stmt->bind_param("sssi", $username, $year, $default_campus, $user_id);
+    }
+    
+    $update_stmt->execute();
+    
+    if ($update_stmt->affected_rows > 0 || $update_stmt->affected_rows === 0) {
+      $_SESSION['update_success'] = true;
+      header("Location: " . $_SERVER['PHP_SELF']);
+      exit;
+    } else {
+      throw new Exception("Failed to update profile");
+    }
+    
+  } catch (Exception $e) {
+    echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
   }
-  $stmt1->close();
-
-  $stmt2 = $conn->prepare("SELECT name, email FROM registration WHERE user_id = ?");
-  $stmt2->bind_param("i", $user_id);
-  $stmt2->execute();
-  $result2 = $stmt2->get_result();
-  if ($row = $result2->fetch_assoc()) {
-    $name = $row['name'];
-    $email = $row['email'];
-  }
-  $stmt2->close();
 }
 
-$show_modal = false;
-$error_message = '';
+// Process password change form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'change_password' && $user_id) {
+  try {
+    $current_password = $_POST['current_password'] ?? '';
+    $new_password = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+    
+    // Validate inputs
+    if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
+      throw new Exception("All password fields are required.");
+    }
+    
+    // Verify current password
+    $stmt = $conn->prepare("SELECT password FROM registration WHERE user_id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+      $stored_hash = $row['password'];
+      
+      if (!password_verify($current_password, $stored_hash)) {
+        $password_status = 'error';
+        $password_message = "Current password is incorrect.";
+      } else if ($new_password !== $confirm_password) {
+        $password_status = 'error';
+        $password_message = "New passwords do not match.";
+      } else if ($current_password === $new_password) {
+        $password_status = 'error';
+        $password_message = "New password must be different from current password.";
+      } else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $new_password)) {
+        $password_status = 'error';
+        $password_message = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+      } else {
+        // All validations passed, update the password
+        $new_hash = password_hash($new_password, PASSWORD_DEFAULT);
+        
+        $update_stmt = $conn->prepare("UPDATE registration SET password = ? WHERE user_id = ?");
+        $update_stmt->bind_param("si", $new_hash, $user_id);
+        $update_stmt->execute();
+        
+        if ($update_stmt->affected_rows > 0) {
+          $password_status = 'success';
+          $password_message = "Password updated successfully!";
+        } else {
+          throw new Exception("Failed to update password. Please try again.");
+        }
+      }
+    } else {
+      throw new Exception("User account not found.");
+    }
+  } catch (Exception $e) {
+    $password_status = 'error';
+    $password_message = "Error: " . $e->getMessage();
+  }
+}
 
+// Load user data
+if ($user_id) {
+  try {
+    $stmt1 = $conn->prepare("SELECT username, year, photo, def_campus FROM account_info WHERE user_id = ?");
+    $stmt1->bind_param("i", $user_id);
+    $stmt1->execute();
+    $result1 = $stmt1->get_result();
+    if ($row = $result1->fetch_assoc()) {
+      $username = $row['username'];
+      $year = $row['year'];
+      $photo = $row['photo'] ? '../../profile_uploads/' . $row['photo'] : '../../public/images/default_profile.jpg';
+      $default_campus = $row['def_campus'];
+    }
+    $stmt1->close();
+
+    $stmt2 = $conn->prepare("SELECT name, email FROM registration WHERE user_id = ?");
+    $stmt2->bind_param("i", $user_id);
+    $stmt2->execute();
+    $result2 = $stmt2->get_result();
+    if ($row = $result2->fetch_assoc()) {
+      $name = $row['name'];
+      $email = $row['email'];
+    }
+    $stmt2->close();
+  } catch (Exception $e) {
+    echo "<script>alert('An error occurred while fetching user data: " . $e->getMessage() . "');</script>";
+  }
+}
+
+// Check if we need to show success modal
 if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
   $show_modal = true;
   unset($_SESSION['update_success']);
 }
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $new_password = $_POST['password'] ?? null;
-  $confirm_password = $_POST['confirm_password'] ?? null;
-
-  if ($new_password && !empty($new_password)) {
-    if ($new_password !== $confirm_password) {
-      $error_message = "Passwords do not match.";
-    } else if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $new_password)) {
-      $error_message = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
-    } else {
-      $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-      $stmt3 = $conn->prepare("SELECT COUNT(*) FROM registration WHERE user_id = ?");
-      $stmt3->bind_param("i", $user_id);
-      $stmt3->execute();
-      $stmt3->bind_result($count);
-      $stmt3->fetch();
-      $stmt3->close();
-
-      if ($count > 0) {
-        $stmt4 = $conn->prepare("UPDATE registration SET password = ? WHERE user_id = ?");
-        $stmt4->bind_param("si", $hashed_password, $user_id);
-        $stmt4->execute();
-        $stmt4->close();
-        $_SESSION['update_success'] = true;
-        header("Location: user_profile.php");
-        exit;
-      } else {
-        $error_message = "User ID not found. Password update failed.";
-      }
-      $_SESSION['update_success'] = true;
-      header("Location: user_profile.php");
-      exit;
-    }
-  }
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -165,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       margin-top: 3.5rem;
-
+      /* Account for fixed header */
       transition: var(--transition);
     }
 
@@ -179,9 +279,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       display: inline-block;
       margin-bottom: 0.5rem;
       width: 100px;
-
+      /* Ensure consistent width */
       height: 100px;
-
+      /* Ensure consistent height */
     }
 
     .profile-photo {
@@ -234,6 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       margin-top: 0.5rem;
       background-color: var(--white);
       border-radius: var(--radius);
+      margin-bottom: 1.5rem;
     }
 
     .card-header {
@@ -331,6 +432,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       color: var(--white);
     }
 
+    .password-message {
+      padding: 0.5rem;
+      margin: 0.5rem 0 1rem;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    .password-message.error {
+      background-color: rgba(239, 83, 80, 0.1);
+      color: var(--error);
+      border: 1px solid var(--error);
+    }
+
+    .password-message.success {
+      background-color: var(--light-green);
+      color: var(--accent-green);
+      border: 1px solid var(--accent-green);
+    }
+
+    .password-requirements {
+      margin: 0.5rem 0 1rem;
+      padding: 0.5rem;
+      background-color: var(--neutral-light);
+      border-radius: var(--radius);
+      font-size: 0.75rem;
+    }
+
+    .password-requirements ul {
+      margin: 0.5rem 0 0;
+      padding-left: 1.5rem;
+    }
+
+    .password-requirements li {
+      margin-bottom: 0.3rem;
+    }
+
     .modal {
       position: fixed;
       top: 0;
@@ -344,6 +482,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
       height: 100vh;
+      /* Ensure full viewport height */
     }
 
     .modal-content {
@@ -385,6 +524,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       background-color: var(--accent-green);
     }
 
+    .password-strength {
+      height: 5px;
+      width: 100%;
+      background: var(--neutral-light);
+      margin-top: 0.5rem;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .password-strength-meter {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    
+    .strength-weak {
+      background-color: var(--error);
+      width: 25%;
+    }
+    
+    .strength-medium {
+      background-color: #FFB74D;
+      width: 50%;
+    }
+    
+    .strength-strong {
+      background-color: #81C784;
+      width: 75%;
+    }
+    
+    .strength-very-strong {
+      background-color: var(--accent-green);
+      width: 100%;
+    }
 
     input,
     select,
@@ -392,7 +565,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     .edit-photo {
       touch-action: manipulation;
     }
-
 
     @media (min-width: 600px) {
       body {
@@ -456,7 +628,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="container">
     <div class="profile-section">
       <div class="profile-photo-container">
-        <img class="profile-photo" id="profilePhoto" alt="Profile Photo" src="<?php echo htmlspecialchars($photo ?? '../../public/images/default_profile.jpg'); ?>" />
+        <img class="profile-photo" id="profilePhoto" alt="Profile Photo" src="<?php echo htmlspecialchars($photo ?? 'default.jpg'); ?>" />
         <input type="file" id="photoInput" name="profile_photo" accept="image/*" style="display: none;" />
         <label for="photoInput" class="edit-photo">Change</label>
       </div>
@@ -464,7 +636,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <p class="profile-email"><?php echo htmlspecialchars($name) . " (" . htmlspecialchars($email) . ")"; ?></p>
     </div>
 
-    <form id="profileForm" method="POST" action="user_profile.php" enctype="multipart/form-data">
+    <!-- Personal Information Form -->
+    <form id="profileForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="update_profile">
       <div class="info-card">
         <div class="card-header">
           <h2 class="card-title">Personal Information</h2>
@@ -493,11 +667,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </select>
         </div>
 
-        <div class="info-row" id="passwordRow" style="display: none;">
-          <label for="password">New Password:</label>
-          <input type="password" id="password" name="password">
-        </div>
-
         <div class="form-actions">
           <button type="submit" class="btn btn-primary" id="saveBtn" style="display: none;">Save Changes</button>
           <button type="button" class="btn btn-cancel" id="cancelBtn" style="display: none;">Cancel</button>
@@ -505,7 +674,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </form>
 
-    <div id="confirmModal" class="modal" style="display:none;">
+    <!-- Password Change Form -->
+    <form id="passwordForm" method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
+      <input type="hidden" name="action" value="change_password">
+      <div class="info-card">
+        <div class="card-header">
+          <h2 class="card-title">Change Password</h2>
+        </div>
+
+        <?php if (!empty($password_message)): ?>
+          <div class="password-message <?php echo $password_status; ?>">
+            <?php echo htmlspecialchars($password_message); ?>
+          </div>
+        <?php endif; ?>
+
+        <div class="info-row">
+          <label for="current_password">Current Password:</label>
+          <input type="password" id="current_password" name="current_password" required>
+        </div>
+
+        <div class="info-row">
+          <label for="new_password">New Password:</label>
+          <input type="password" id="new_password" name="new_password" required>
+          <div class="password-strength">
+            <div class="password-strength-meter" id="passwordStrength"></div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <label for="confirm_password">Confirm New Password:</label>
+          <input type="password" id="confirm_password" name="confirm_password" required>
+        </div>
+
+        <div class="password-requirements">
+          <p>Password must contain:</p>
+          <ul>
+            <li id="req-length">At least 8 characters</li>
+            <li id="req-uppercase">At least one uppercase letter</li>
+            <li id="req-lowercase">At least one lowercase letter</li>
+            <li id="req-number">At least one number</li>
+            <li id="req-special">At least one special character</li>
+          </ul>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="changePasswordBtn">Change Password</button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Success Modal -->
+    <div id="confirmModal" class="modal" style="display:<?php echo $show_modal ? 'flex' : 'none'; ?>">
       <div class="modal-content">
         <p>Changes saved successfully!</p>
         <button id="closeModal" class="btn btn-primary">OK</button>
@@ -514,19 +733,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
   <script>
+    // Profile form functionality
     const editBtn = document.getElementById('editBtn');
     const saveBtn = document.getElementById('saveBtn');
     const cancelBtn = document.getElementById('cancelBtn');
-    const inputs = document.querySelectorAll('#profileForm input, #profileForm select');
+    const inputs = document.querySelectorAll('#profileForm input:not([type="file"]):not([type="hidden"]), #profileForm select');
     const modal = document.getElementById('confirmModal');
     const closeModal = document.getElementById('closeModal');
-    const passwordRow = document.getElementById('passwordRow');
+    const photoInput = document.getElementById('photoInput');
+    const profileForm = document.getElementById('profileForm');
 
     editBtn.addEventListener('click', () => {
-      inputs.forEach(input => input.removeAttribute('readonly'));
-      document.getElementById('default_campus').disabled = false;
-      document.getElementById('year').disabled = false;
-      passwordRow.style.display = 'block';
+      inputs.forEach(input => {
+        if(input.tagName.toLowerCase() === 'input') {
+          input.removeAttribute('readonly');
+        } else {
+          input.disabled = false;
+        }
+      });
       saveBtn.style.display = 'inline-block';
       cancelBtn.style.display = 'inline-block';
       editBtn.style.display = 'none';
@@ -540,7 +764,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       modal.style.display = 'none';
     });
 
-    document.getElementById('photoInput').addEventListener('change', function(event) {
+    photoInput.addEventListener('change', function(event) {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
@@ -548,16 +772,100 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           document.getElementById('profilePhoto').src = e.target.result;
         };
         reader.readAsDataURL(file);
+        
+        // Make sure the form can be submitted when photo is changed
+        if(editBtn.style.display === 'none') {
+        
+        } else {
+          editBtn.click();
+        }
       }
     });
 
-    <?php if ($show_modal): ?>
-      window.addEventListener('DOMContentLoaded', () => {
-        modal.style.display = 'block';
-      });
-    <?php endif; ?>
-  </script>
+    // Fix for form submission with file upload
+    document.getElementById('profileForm').addEventListener('submit', function() {
+      // Copy the file from the hidden input to the form when submitting
+      if(photoInput.files.length > 0) {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.name = 'profile_photo';
+        fileInput.files = photoInput.files;
+        this.appendChild(fileInput);
+      }
+    });
 
+    // Password strength and validation
+    const newPasswordInput = document.getElementById('new_password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const changePasswordBtn = document.getElementById('changePasswordBtn');
+    
+    // Password requirement elements
+    const reqLength = document.getElementById('req-length');
+    const reqUppercase = document.getElementById('req-uppercase');
+    const reqLowercase = document.getElementById('req-lowercase');
+    const reqNumber = document.getElementById('req-number');
+    const reqSpecial = document.getElementById('req-special');
+    newPasswordInput.addEventListener('input', function() {
+    const password = this.value;
+
+    // Check requirements
+    const hasLength = password.length >= 8;
+    const hasUppercase = /[A-Z]/.test(password);
+    const hasLowercase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+    // Calculate strength
+    let strength = 0;
+    if (hasLength) strength++;
+    if (hasUppercase) strength++;
+    if (hasLowercase) strength++;
+    if (hasNumber) strength++;
+    if (hasSpecial) strength++;
+
+    // Reset and update strength meter
+    passwordStrength.className = 'password-strength-meter';
+    if (password.length === 0) {
+      passwordStrength.style.width = '0%';
+    } else if (strength <= 2) {
+      passwordStrength.classList.add('strength-weak');
+      passwordStrength.style.width = '25%';
+    } else if (strength === 3) {
+      passwordStrength.classList.add('strength-medium');
+      passwordStrength.style.width = '50%';
+    } else if (strength === 4) {
+      passwordStrength.classList.add('strength-strong');
+      passwordStrength.style.width = '75%';
+    } else {
+      passwordStrength.classList.add('strength-very-strong');
+      passwordStrength.style.width = '100%';
+    }
+
+    // Check if passwords match
+    validatePasswordMatch();
+  });
+
+    confirmPasswordInput.addEventListener('input', validatePasswordMatch);
+
+function validatePasswordMatch() {
+  const newPassword = newPasswordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
+
+  if (newPassword !== confirmPassword) {
+    confirmPasswordInput.setCustomValidity("Passwords do not match.");
+  } else {
+    confirmPasswordInput.setCustomValidity("");
+  }
+}
+
+
+document.getElementById('passwordForm').addEventListener('submit', function(event) {
+  if (!newPasswordInput.checkValidity() || !confirmPasswordInput.checkValidity()) {
+    event.preventDefault();
+    alert("Please ensure all password fields are filled out correctly.");
+  }
+});
+</script>
 </body>
-
 </html>
