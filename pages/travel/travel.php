@@ -1,3 +1,10 @@
+<?php
+
+include '../nav/nav.php';
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -20,11 +27,6 @@
           src="https://c.animaapp.com/m9mx4jlaX1ZZmZ/img/screenshot-2025-04-13-113321-removebg-preview-1.png"
         />
       </div>
-      <img
-        class="menu-bar"
-        alt="Menu Bar"
-        src="../../public/icons/bars-solid.svg"
-      />
     </div>
     <div class="content w-full">
       <div class="ml-2 flex flex-col justfiy-center w-full">
