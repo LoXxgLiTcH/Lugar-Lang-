@@ -1,3 +1,6 @@
+
+<?php include '../nav/nav.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,28 +39,28 @@
           <img class="member-photo" alt="Homer's Photo" src="/api/placeholder/80/80" />
           <h3 class="member-name">Homer</h3>
           <p class="member-role">Project Manager & Back-End Developer</p>
-          <p class="member-desc">Leading the team with expertise in server architecture and project coordination. Homer ensures smooth development cycles and maintains the backbone of the Lugar Lang! application.</p>
+          <p class="member-desc">Leading the team with project direction and member coordination. Homer ensures smooth development cycles and maintains the backbone of the Lugar Lang! application, both in front-end and back-end contexts.</p>
         </div>
 
         <div class="team-member">
           <img class="member-photo" alt="Jade's Photo" src="/api/placeholder/80/80" />
           <h3 class="member-name">Jade</h3>
           <p class="member-role">Full-Stack Developer</p>
-          <p class="member-desc">Versatile in both front-end and back-end technologies, Jade bridges design and functionality to create seamless user experiences across all aspects of the application.</p>
+          <p class="member-desc">Versatile in both front-end and back-end technologies, Jade is responsible for the implementation of the Google Maps API in Lugar Lang that allows for navigation functionality which displays the relevant routes and other data pulled from Google's Maps API.</p>
         </div>
 
         <div class="team-member">
           <img class="member-photo" alt="James's Photo" src="/api/placeholder/80/80" />
           <h3 class="member-name">James</h3>
           <p class="member-role">Database Engineer</p>
-          <p class="member-desc">The architect behind MySQL Database, James ensures efficient information storage and retrieval, optimizing performance throughout the application.</p>
+          <p class="member-desc">The architect behind the MySQL Database, James designed the backend architecture that allowed for the optimal storage and retrieval of information which includes the user database and their corresponding information.>
         </div>
 
         <div class="team-member">
           <img class="member-photo" alt="Leira's Photo" src="/api/placeholder/80/80" />
           <h3 class="member-name">Leira</h3>
           <p class="member-role">UI/UX Designer</p>
-          <p class="member-desc">With a keen eye for aesthetics and user behavior, Leira designs intuitive interfaces that make navigation through our app a delightful experience.</p>
+          <p class="member-desc">With a keen eye for aesthetics and user behavior, Leira designs intuitive interfaces that makes the user experience through our app a pleasant experience.</p>
         </div>
 
         <div class="team-member">

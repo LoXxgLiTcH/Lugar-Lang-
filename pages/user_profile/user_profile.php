@@ -17,68 +17,68 @@ $password_status = '';
 
 $user_id = isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) ? (int) $_SESSION['user_id'] : null;
 
-// Process profile update form submission
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update_profile' && $user_id) {
   try {
-    // Get form data
+
     $username = isset($_POST['username']) ? trim($_POST['username']) : '';
     $year = isset($_POST['year']) ? trim($_POST['year']) : '';
     $default_campus = isset($_POST['default_campus']) ? trim($_POST['default_campus']) : '';
-    
-    // Validate data
+
+
     if (empty($username)) {
       throw new Exception("Username cannot be empty");
     }
-    
-    // Check if year is valid
+
+
     $valid_years = ['1st', '2nd', '3rd', '4th'];
     if (!in_array($year, $valid_years)) {
       throw new Exception("Invalid year selected");
     }
-    
-    // Check if campus is valid
+
+
     $valid_campuses = ['talamban', 'downtown'];
     if (!in_array($default_campus, $valid_campuses)) {
       throw new Exception("Invalid campus selected");
     }
-    
-    // Handle photo upload if provided
+
+
     if (isset($_FILES['profile_photo']) && $_FILES['profile_photo']['error'] === 0) {
       $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
       $file_type = $_FILES['profile_photo']['type'];
-      
+
       if (!in_array($file_type, $allowed_types)) {
         throw new Exception("Only JPG, PNG, and GIF files are allowed");
       }
-      
+
       $upload_dir = 'uploads/profile_photos/';
       if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
       }
-      
+
       $file_name = $user_id . '_' . time() . '_' . basename($_FILES['profile_photo']['name']);
       $target_file = $upload_dir . $file_name;
-      
+
       if (move_uploaded_file($_FILES['profile_photo']['tmp_name'], $target_file)) {
         $photo = $target_file;
       } else {
         throw new Exception("Failed to upload profile photo");
       }
     }
-    
-    // Update database
-    $update_stmt = $conn->prepare("UPDATE account_info SET username = ?, year = ?, def_campus = ?" . 
-                                  ($photo ? ", photo = ?" : "") . 
-                                  " WHERE user_id = ?");
-    
+
+
+    $update_stmt = $conn->prepare("UPDATE account_info SET username = ?, year = ?, def_campus = ?" .
+      ($photo ? ", photo = ?" : "") .
+      " WHERE user_id = ?");
+
     if ($photo) {
       $update_stmt->bind_param("ssssi", $username, $year, $default_campus, $photo, $user_id);
     } else {
       $update_stmt->bind_param("sssi", $username, $year, $default_campus, $user_id);
     }
-    
+
     $update_stmt->execute();
-    
+
     if ($update_stmt->affected_rows > 0 || $update_stmt->affected_rows === 0) {
       $_SESSION['update_success'] = true;
       header("Location: " . $_SERVER['PHP_SELF']);
@@ -86,32 +86,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     } else {
       throw new Exception("Failed to update profile");
     }
-    
   } catch (Exception $e) {
     echo "<script>alert('Error: " . $e->getMessage() . "');</script>";
   }
 }
 
-// Process password change form submission
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'change_password' && $user_id) {
   try {
     $current_password = $_POST['current_password'] ?? '';
     $new_password = $_POST['new_password'] ?? '';
     $confirm_password = $_POST['confirm_password'] ?? '';
-    
-    // Validate inputs
+
+
     if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
       throw new Exception("All password fields are required.");
     }
-    
-    // Verify current password
+
+
     $stmt = $conn->prepare("SELECT password FROM registration WHERE user_id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($row = $result->fetch_assoc()) {
       $stored_hash = $row['password'];
-      
+
       if (!password_verify($current_password, $stored_hash)) {
         $password_status = 'error';
         $password_message = "Current password is incorrect.";
@@ -125,13 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $password_status = 'error';
         $password_message = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
       } else {
-        // All validations passed, update the password
+
         $new_hash = password_hash($new_password, PASSWORD_DEFAULT);
-        
+
         $update_stmt = $conn->prepare("UPDATE registration SET password = ? WHERE user_id = ?");
         $update_stmt->bind_param("si", $new_hash, $user_id);
         $update_stmt->execute();
-        
+
         if ($update_stmt->affected_rows > 0) {
           $password_status = 'success';
           $password_message = "Password updated successfully!";
@@ -148,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
   }
 }
 
-// Load user data
+
 if ($user_id) {
   try {
     $stmt1 = $conn->prepare("SELECT username, year, photo, def_campus FROM account_info WHERE user_id = ?");
@@ -177,12 +176,16 @@ if ($user_id) {
   }
 }
 
-// Check if we need to show success modal
+
 if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
   $show_modal = true;
   unset($_SESSION['update_success']);
 }
 ?>
+
+
+<?php include '../nav/nav.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -265,7 +268,7 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       margin-top: 3.5rem;
-      /* Account for fixed header */
+
       transition: var(--transition);
     }
 
@@ -279,9 +282,9 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       display: inline-block;
       margin-bottom: 0.5rem;
       width: 100px;
-      /* Ensure consistent width */
+
       height: 100px;
-      /* Ensure consistent height */
+
     }
 
     .profile-photo {
@@ -482,7 +485,7 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
       height: 100vh;
-      /* Ensure full viewport height */
+
     }
 
     .modal-content {
@@ -532,28 +535,28 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       border-radius: 10px;
       overflow: hidden;
     }
-    
+
     .password-strength-meter {
       height: 100%;
       width: 0%;
       transition: width 0.3s ease;
     }
-    
+
     .strength-weak {
       background-color: var(--error);
       width: 25%;
     }
-    
+
     .strength-medium {
       background-color: #FFB74D;
       width: 50%;
     }
-    
+
     .strength-strong {
       background-color: #81C784;
       width: 75%;
     }
-    
+
     .strength-very-strong {
       background-color: var(--accent-green);
       width: 100%;
@@ -622,7 +625,6 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       <img class="header-icon" alt="User Profile Icon" src="../../public/icons/users-solid.svg" />
       <span class="header-title">My Profile</span>
     </div>
-    <img class="header-icon" alt="Menu Icon" src="../../public/icons/bars-solid.svg" />
   </div>
 
   <div class="container">
@@ -733,7 +735,6 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
   </div>
 
   <script>
-    // Profile form functionality
     const editBtn = document.getElementById('editBtn');
     const saveBtn = document.getElementById('saveBtn');
     const cancelBtn = document.getElementById('cancelBtn');
@@ -745,7 +746,7 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
 
     editBtn.addEventListener('click', () => {
       inputs.forEach(input => {
-        if(input.tagName.toLowerCase() === 'input') {
+        if (input.tagName.toLowerCase() === 'input') {
           input.removeAttribute('readonly');
         } else {
           input.disabled = false;
@@ -772,20 +773,20 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
           document.getElementById('profilePhoto').src = e.target.result;
         };
         reader.readAsDataURL(file);
-        
-        // Make sure the form can be submitted when photo is changed
-        if(editBtn.style.display === 'none') {
-        
+
+
+        if (editBtn.style.display === 'none') {
+
         } else {
           editBtn.click();
         }
       }
     });
 
-    // Fix for form submission with file upload
+
     document.getElementById('profileForm').addEventListener('submit', function() {
-      // Copy the file from the hidden input to the form when submitting
-      if(photoInput.files.length > 0) {
+
+      if (photoInput.files.length > 0) {
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.name = 'profile_photo';
@@ -794,78 +795,79 @@ if (isset($_SESSION['update_success']) && $_SESSION['update_success']) {
       }
     });
 
-    // Password strength and validation
+
     const newPasswordInput = document.getElementById('new_password');
     const confirmPasswordInput = document.getElementById('confirm_password');
     const passwordStrength = document.getElementById('passwordStrength');
     const changePasswordBtn = document.getElementById('changePasswordBtn');
-    
-    // Password requirement elements
+
+
     const reqLength = document.getElementById('req-length');
     const reqUppercase = document.getElementById('req-uppercase');
     const reqLowercase = document.getElementById('req-lowercase');
     const reqNumber = document.getElementById('req-number');
     const reqSpecial = document.getElementById('req-special');
     newPasswordInput.addEventListener('input', function() {
-    const password = this.value;
+      const password = this.value;
 
-    // Check requirements
-    const hasLength = password.length >= 8;
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasLowercase = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
 
-    // Calculate strength
-    let strength = 0;
-    if (hasLength) strength++;
-    if (hasUppercase) strength++;
-    if (hasLowercase) strength++;
-    if (hasNumber) strength++;
-    if (hasSpecial) strength++;
+      const hasLength = password.length >= 8;
+      const hasUppercase = /[A-Z]/.test(password);
+      const hasLowercase = /[a-z]/.test(password);
+      const hasNumber = /[0-9]/.test(password);
+      const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
 
-    // Reset and update strength meter
-    passwordStrength.className = 'password-strength-meter';
-    if (password.length === 0) {
-      passwordStrength.style.width = '0%';
-    } else if (strength <= 2) {
-      passwordStrength.classList.add('strength-weak');
-      passwordStrength.style.width = '25%';
-    } else if (strength === 3) {
-      passwordStrength.classList.add('strength-medium');
-      passwordStrength.style.width = '50%';
-    } else if (strength === 4) {
-      passwordStrength.classList.add('strength-strong');
-      passwordStrength.style.width = '75%';
-    } else {
-      passwordStrength.classList.add('strength-very-strong');
-      passwordStrength.style.width = '100%';
-    }
 
-    // Check if passwords match
-    validatePasswordMatch();
-  });
+      let strength = 0;
+      if (hasLength) strength++;
+      if (hasUppercase) strength++;
+      if (hasLowercase) strength++;
+      if (hasNumber) strength++;
+      if (hasSpecial) strength++;
+
+
+      passwordStrength.className = 'password-strength-meter';
+      if (password.length === 0) {
+        passwordStrength.style.width = '0%';
+      } else if (strength <= 2) {
+        passwordStrength.classList.add('strength-weak');
+        passwordStrength.style.width = '25%';
+      } else if (strength === 3) {
+        passwordStrength.classList.add('strength-medium');
+        passwordStrength.style.width = '50%';
+      } else if (strength === 4) {
+        passwordStrength.classList.add('strength-strong');
+        passwordStrength.style.width = '75%';
+      } else {
+        passwordStrength.classList.add('strength-very-strong');
+        passwordStrength.style.width = '100%';
+      }
+
+
+      validatePasswordMatch();
+    });
 
     confirmPasswordInput.addEventListener('input', validatePasswordMatch);
 
-function validatePasswordMatch() {
-  const newPassword = newPasswordInput.value;
-  const confirmPassword = confirmPasswordInput.value;
+    function validatePasswordMatch() {
+      const newPassword = newPasswordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
 
-  if (newPassword !== confirmPassword) {
-    confirmPasswordInput.setCustomValidity("Passwords do not match.");
-  } else {
-    confirmPasswordInput.setCustomValidity("");
-  }
-}
+      if (newPassword !== confirmPassword) {
+        confirmPasswordInput.setCustomValidity("Passwords do not match.");
+      } else {
+        confirmPasswordInput.setCustomValidity("");
+      }
+    }
 
 
-document.getElementById('passwordForm').addEventListener('submit', function(event) {
-  if (!newPasswordInput.checkValidity() || !confirmPasswordInput.checkValidity()) {
-    event.preventDefault();
-    alert("Please ensure all password fields are filled out correctly.");
-  }
-});
-</script>
+    document.getElementById('passwordForm').addEventListener('submit', function(event) {
+      if (!newPasswordInput.checkValidity() || !confirmPasswordInput.checkValidity()) {
+        event.preventDefault();
+        alert("Please ensure all password fields are filled out correctly.");
+      }
+    });
+  </script>
 </body>
+
 </html>
