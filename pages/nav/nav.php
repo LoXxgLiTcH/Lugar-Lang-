@@ -1,20 +1,21 @@
 <?php
 session_start();
 
-// Ensure database connection if needed
+
 try {
     $conn = new mysqli("localhost", "root", "", "lugarlangdb");
     $conn->set_charset("utf8mb4");
 } catch (Exception $e) {
     echo "<script>alert('Database connection failed. Please try again later.');</script>";
-    exit;
-}
+        exit;
+    }
 
-// Retrieve user data from session or database
+
+
 $user_id = $_SESSION["user_id"] ?? null;
 $userName = $_SESSION['user_name'] ?? 'User Name';
 $userEmail = $_SESSION['user_email'] ?? 'user@example.com';
-$userProfilePic = 'images/default-avatar.png'; // Default profile picture
+$userProfilePic = 'images/default-avatar.png';
 
 if ($user_id) {
     $stmt = $conn->prepare("SELECT photo FROM account_info WHERE user_id = ?");
@@ -32,6 +33,9 @@ if ($user_id) {
     <div class="hamburger-icon" id="hamburgerIcon">
         <span></span>
         <span></span>
+        <a href="../home/home.php" class="home-icon">
+            <i class="icon-home"></i>
+        </a>
         <span></span>
     </div>
     <div class="user-menu" id="userMenu">
@@ -45,13 +49,13 @@ if ($user_id) {
             </div>
         </div>
         <div class="menu-items">
-            <a href="update-profile.php" class="menu-item">
+            <a href="../user_profile/user_profile.php" class="menu-item">
                 <i class="icon-user"></i> Update Profile
             </a>
-            <a href="bookmarks.php" class="menu-item">
-                <i class="icon-bookmark"></i> My Bookmarks
+            <a href="../bookmarks/bookmarks.php" class="menu-item">
+                <i class="icon-bookmark"></i> Bookmarked Routes
             </a>
-            <a href="logout.php" class="menu-item logout">
+            <a href="../login/login_page.php" class="menu-item logout">
                 <i class="icon-logout"></i> Log Out
             </a>
         </div>
@@ -193,7 +197,7 @@ if ($user_id) {
         color: #cc2f26;
     }
 
-    /* Simple icons (replace with your own icon set if preferred) */
+
     .icon-user:before {
         content: "👤";
     }
@@ -212,13 +216,13 @@ if ($user_id) {
         const hamburgerIcon = document.getElementById('hamburgerIcon');
         const userMenu = document.getElementById('userMenu');
 
-        // Toggle menu when hamburger icon is clicked
+
         hamburgerIcon.addEventListener('click', function() {
             this.classList.toggle('active');
             userMenu.classList.toggle('active');
         });
 
-        // Close menu when clicking outside
+
         document.addEventListener('click', function(event) {
             if (!hamburgerIcon.contains(event.target) && !userMenu.contains(event.target)) {
                 hamburgerIcon.classList.remove('active');

@@ -1,0 +1,83 @@
+:root {
+  --primary: #FF7F2A;
+  --primary-light: #FFD6BC;
+  --secondary: #2EA355;
+  --secondary-light: #C5EACD;
+  --neutral-dark: #333333;
+  --neutral-medium: #9E9E9E;
+  --neutral-light: #F4F4F4;
+  --white: #FFFFFF;
+  --error: #EF5350;
+  --shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  --radius: 12px;
+  --transition: all 0.3s ease;
+}
+
+body {
+  background-color: var(--primary-light);
+  font-family: Arial, sans-serif;
+  color: var(--neutral-dark);
+  margin: 0;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.route-container {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 30px;
+  box-shadow: var(--shadow);
+  max-width: 600px;
+  width: 100%;
+  position: relative;
+}
+
+.route-container h1 {
+  margin-top: 0;
+  color: var(--primary);
+  text-align: center;
+}
+
+.route-info {
+  text-align: center;
+  color: var(--neutral-medium);
+  margin-bottom: 30px;
+}
+
+.timeline {
+  position: relative;
+}
+
+.line {
+  position: absolute;
+  left: 18px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--secondary);
+  z-index: 0;
+}
+
+.waypoints {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.waypoint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background-color: var(--secondary-light);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+  z-index: 1;
+}
+
+.waypoint i {
+  color: var(--primary);
+  font-size: 18px;
+}

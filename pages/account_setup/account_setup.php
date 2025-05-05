@@ -201,7 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
         <div class="campus-details">
           <h3 class="campus-name">Talamban Campus</h3>
           <p class="campus-location">University of San Carlos, Nasipit, Talamban, Cebu City</p>
-          <p class="campus-description">The University of San Carlos Talamban campus in Cebu combines nature and modern design, set on a hill with lush trees and singing birds. Students often ride jeepneys to reach higher levels of the campus, adding a fun twist to their day. With fresh air, grassy fields, and friendly wild dogs and cats, it offers a relaxing yet vibrant atmosphere for learning.</p>
+          <p class="campus-description">The Talamban Campus combines nature and modern design, set on a hill with lush trees and singing birds. Students often ride jeepneys to reach higher levels of the campus, adding a fun twist to their day. With fresh air, grassy fields, and friendly wild dogs and cats, it offers a relaxing yet vibrant atmosphere for learning without it feeling too remote.</p>
         </div>
 
         <div class="pin-destination" data-campus="talamban" <?php if ($defaultCampus == 'talamban') echo 'class="active"'; ?>>
@@ -224,7 +224,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
         <div class="campus-details">
           <h3 class="campus-name">Downtown Campus</h3>
           <p class="campus-location">University of San Carlos Main, Alcantara St, Cebu City</p>
-          <p class="campus-description">The University of San Carlos downtown campus in Cebu is located in the bustling heart of the city, surrounded by urban buildings and vibrant life. While it has a more traditional school setup with corridors and classrooms, there are still green spaces that add a touch of nature to the environment. Designed with business and law students in mind, the campus exudes a professional vibe, featuring uniform colors and a compact layout that fosters a focused and dynamic atmosphere for learning.</p>
+          <p class="campus-description">The Downtown campus  is located in the bustling heart of the city in Colon, surrounded by urban buildings and vibrant life. While it has a more traditional school setup with corridors and classrooms, there are still green spaces that add a touch of nature to the environment. Designed with business and law students in mind, the campus exudes a professional vibe, featuring uniform colors and a compact layout that fosters a focused and dynamic atmosphere for learning.</p>
         </div>
 
         <div class="pin-destination" data-campus="downtown" <?php if ($defaultCampus == 'downtown') echo 'class="active"'; ?>>
