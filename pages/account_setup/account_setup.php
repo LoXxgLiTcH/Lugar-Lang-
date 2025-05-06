@@ -3,7 +3,8 @@ session_start();
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try {
-  $conn = new mysqli("localhost", "root", "", "lugarlangdb");
+  $conn = new mysqli("localhost", "s24103175_lugarlangdb", "lugarlangdb", "s24103175_lugarlangdb");
+
   $conn->set_charset("utf8mb4");
 } catch (Exception $e) {
   echo "<script>alert('Database connection failed. Please try again later.');</script>";
@@ -164,15 +165,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
 
 
     @media (min-width: 576px) {
-            .page-container {
-                padding: 65px;
-                max-width: 960px;
-            }
+      .page-container {
+        padding: 65px;
+        max-width: 960px;
+      }
 
-            .header p {
-                max-width: 80%;
-            }
-        }
+      .header p {
+        max-width: 80%;
+      }
+    }
 
     .page-container.blurred {
       filter: blur(5px);
@@ -224,7 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"])) {
         <div class="campus-details">
           <h3 class="campus-name">Downtown Campus</h3>
           <p class="campus-location">University of San Carlos Main, Alcantara St, Cebu City</p>
-          <p class="campus-description">The Downtown campus  is located in the bustling heart of the city in Colon, surrounded by urban buildings and vibrant life. While it has a more traditional school setup with corridors and classrooms, there are still green spaces that add a touch of nature to the environment. Designed with business and law students in mind, the campus exudes a professional vibe, featuring uniform colors and a compact layout that fosters a focused and dynamic atmosphere for learning.</p>
+          <p class="campus-description">The Downtown campus is located in the bustling heart of the city in Colon, surrounded by urban buildings and vibrant life. While it has a more traditional school setup with corridors and classrooms, there are still green spaces that add a touch of nature to the environment. Designed with business and law students in mind, the campus exudes a professional vibe, featuring uniform colors and a compact layout that fosters a focused and dynamic atmosphere for learning.</p>
         </div>
 
         <div class="pin-destination" data-campus="downtown" <?php if ($defaultCampus == 'downtown') echo 'class="active"'; ?>>

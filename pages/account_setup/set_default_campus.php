@@ -4,7 +4,7 @@ session_start();
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try {
-    $conn = new mysqli("localhost", "root", "", "lugarlangdb");
+    $conn = new mysqli("localhost", "s24103175_lugarlangdb", "lugarlangdb", "s24103175_lugarlangdb");
     $conn->set_charset("utf8mb4");
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Database connection failed']);

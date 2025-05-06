@@ -1,16 +1,13 @@
 <?php
 session_start();
-$db_server = "localhost";
-$db_user = "root";
-$db_pass = "";
-$db_name = "lugarlangdb";
+
 
 $error_message = "";
 
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 try {
-    $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
+    $conn = new mysqli("localhost", "s24103175_lugarlangdb", "lugarlangdb", "s24103175_lugarlangdb");
     $conn->set_charset("utf8mb4");
 } catch (Exception $e) {
     $error_message = "Database connection failed. Please try again later.";
